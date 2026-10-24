@@ -1,0 +1,7 @@
+Flask>=3.1,<4
+requests>=2.32,<3
+Pillow>=11,<14
+numpy>=2,<3
+ai-edge-litert>=2,<3
+
+aiohttp>=3.12,<4

@@ -1,0 +1,15 @@
+# Local-only settings, spool counters, events, credentials and model files
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+data/*
+!data/.gitkeep
+models/*
+!models/.gitkeep
+!models/README.md
+*.sqlite*
+*.log
+.DS_Store

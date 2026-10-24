@@ -1,0 +1,34 @@
+:root{color-scheme:dark;--bg:#101719;--panel:#192326;--line:#304044;--text:#e8efea;--muted:#9eb0ad;--accent:#b8e879}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,sans-serif}header,main{width:min(1680px,96%);margin:auto}header{display:flex;justify-content:space-between;align-items:center;padding:25px 0;border-bottom:1px solid var(--line)}h1{font-size:30px;margin:0;letter-spacing:-1px}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--accent)}h2{font-size:23px;margin:0 0 8px}h3{margin:10px 0}p{margin:5px 0 14px}.intro{display:flex;align-items:center;justify-content:space-between;padding:26px 0 12px;gap:20px}.actions{display:flex;gap:10px}button,a{touch-action:manipulation}button{background:var(--accent);color:#172313;border:0;border-radius:7px;padding:11px 17px;font:inherit;font-weight:650;cursor:pointer}.secondary{background:#283639;color:var(--text);border:1px solid var(--line)}a{color:var(--accent)}button:hover{filter:brightness(1.1)}button:disabled{opacity:.4}.pill{border:1px solid var(--line);padding:7px 13px;border-radius:30px;font-size:13px}#notice{border-left:3px solid var(--accent);background:#202c24;padding:12px 16px;margin:8px 0 20px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.metrics>div,.panel,.camera{background:var(--panel);border:1px solid var(--line);border-radius:10px}.metrics>div{padding:17px}small{display:block;font-size:10px;letter-spacing:1px;color:var(--muted)}strong{display:block;font-size:17px;margin-top:5px;overflow-wrap:anywhere}.cameras{display:grid;gap:20px}.cameraHead{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;gap:10px}.cameraHead h3{margin:0}.cameraInfo{padding:12px 18px;color:var(--muted)}.viewport{position:relative;background:#050808;width:100%;aspect-ratio:16/9;display:grid;place-items:center;overflow:hidden}.viewport img{width:100%;height:100%;object-fit:contain;position:absolute}.viewport .frameError{position:absolute;inset:0;display:grid;place-items:center;background:#0d1519d9;text-align:center;padding:25px}.viewport .frameError[hidden]{display:none}.viewport.expanded,.viewport:fullscreen{position:fixed;inset:0;width:100vw;height:100dvh;aspect-ratio:auto;z-index:1000}.exitFull{position:absolute;top:15px;right:15px;z-index:1001}.panel{padding:20px;margin:20px 0}.sectionTitle{display:flex;justify-content:space-between;align-items:center;gap:15px}.muted{color:var(--muted);font-size:13px}table{width:100%;border-collapse:collapse;text-align:left}th{color:var(--muted);font-size:11px;text-transform:uppercase}td,th{padding:12px 10px;border-bottom:1px solid var(--line)}.tableWrap{overflow:auto}dialog{width:min(950px,95vw);max-height:90dvh;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);padding:25px}dialog::backdrop{background:#000b}.formGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}label{display:block;color:var(--muted);font-size:13px}input,select,textarea{width:100%;display:block;background:#10191c;color:var(--text);border:1px solid #475e62;border-radius:5px;padding:9px;font:inherit;margin-top:5px}textarea{min-height:55px}input[type=checkbox]{width:auto;display:inline-block;margin-right:8px}.check{padding:12px 0}.rule{border-top:1px solid var(--line);padding:14px 0}.rule .formGrid{grid-template-columns:repeat(3,minmax(0,1fr))}#settingsError{color:#ffb0a2}summary{cursor:pointer;font-weight:600}@media(max-width:700px){header,main{width:94%}.intro{align-items:start;flex-direction:column}.metrics{grid-template-columns:repeat(2,1fr)}.metrics>div{padding:12px}.formGrid,.rule .formGrid{grid-template-columns:1fr}.cameraHead{padding:10px;flex-wrap:wrap}.viewport{aspect-ratio:4/3}h2{font-size:21px}}
+
+.viewTabs{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}#klipperFrame{display:block;width:100%;height:80dvh;border:0;background:#151515;border-radius:8px;margin-top:12px}#filamentSensor{padding:10px;border-left:3px solid var(--accent)}#spoolError{color:#ffb0a2}[hidden]{display:none!important}
+
+body.camera-embed .viewTabs{display:none}body.camera-embed header{padding:12px 0}body.camera-embed h1{font-size:23px}body.camera-embed .intro{padding-top:15px}
+body.camera-embed #monitorPanel{display:flex;flex-direction:column}body.camera-embed .intro{display:none}body.camera-embed #notice{order:-6;margin:10px 0}body.camera-embed #cameras{order:-5}body.camera-embed #monitorPanel>.metrics{order:-4;margin-top:15px}body.camera-embed #filamentPanel{order:-3}
+
+/* Embedded Klipper camera: reserve the viewport for the image. */
+body.camera-embed{font-size:12px;overflow:hidden}
+body.camera-embed header{display:none}
+body.camera-embed main{width:100%;margin:0;height:100dvh;display:flex;flex-direction:column}
+.embedBar{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:32px;padding:3px 7px;border-bottom:1px solid var(--line);background:#152022;flex:0 0 auto}
+.embedBar span{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+body.camera-embed button{font-size:11px;padding:5px 9px;border-radius:4px;line-height:1.4}
+body.camera-embed #monitorPanel{flex:1;min-height:0;height:auto;overflow:hidden}
+body.camera-embed #cameras{flex:1;min-height:0;gap:4px;grid-auto-rows:minmax(0,1fr)}
+body.camera-embed .camera{display:flex;flex-direction:column;min-height:0;border:0;border-radius:0;overflow:hidden}
+body.camera-embed .cameraHead{padding:3px 7px;min-height:28px;flex:0 0 auto}
+body.camera-embed .cameraHead h3{font-size:11px;font-weight:500;margin:0}
+body.camera-embed .viewport{flex:1;min-height:0;height:auto;aspect-ratio:auto}
+body.camera-embed .cameraInfo{font-size:10px;padding:2px 7px;min-height:19px;flex:0 0 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.camera-embed .viewport.expanded,body.camera-embed .viewport:fullscreen{position:fixed;height:100dvh;width:100vw;inset:0}
+body.camera-embed #embedDetails{font-size:13px;max-height:90dvh}
+body.camera-embed #embedDetails h2{font-size:18px}
+body.camera-embed #embedDetails .panel{padding:12px;margin:12px 0}
+body.camera-embed #embedDetails .metrics{gap:6px;margin:12px 0}
+body.camera-embed #embedDetails .metrics>div{padding:9px}
+body.camera-embed #embedDetails strong{font-size:14px}
+body.camera-embed #embedDetails #notice{display:block;font-size:12px;padding:8px}
+body.camera-embed .embedBar{padding-right:33px}
+/* High-contrast access to print details. */
+.embedBar button{background:#b8e879!important;color:#14200e!important;border:1px solid #d5ffa8!important;font-weight:750;box-shadow:0 0 0 1px #172514}
+.embedBar button:hover{background:#d4ffa2!important}
+.embedBar button:focus-visible{outline:3px solid #fff;outline-offset:2px}
