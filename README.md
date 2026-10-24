@@ -157,3 +157,10 @@ validated on representative normal and failed prints.
 `enable-autostart.command` can create a macOS user LaunchAgent in observe-only mode.
 It needs an active user session, does not bypass FileVault/login, and does not prevent
 sleep. No remote access or startup service is enabled just by downloading the repository.
+
+## Continuous operation and laptop sleep
+
+PrintWatch cannot monitor while its host computer is asleep or off. Tailscale does
+not change that. For a permanent installation, deploy on an always-awake desktop
+or other suitable host and test service startup and phone access on that host.
+See [continuous deployment checklist](DEPLOYMENT.md) before relying on unattended monitoring.

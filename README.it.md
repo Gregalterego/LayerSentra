@@ -57,3 +57,12 @@ proprio materiale, illuminazione, telecamere e tipi di guasto.
 
 La cartella `data/`, i modelli, i log, le immagini e le configurazioni locali non
 vanno pubblicati. Il repository include regole `.gitignore` e nessun dato reale.
+
+## Uso continuativo
+
+Se il computer che esegue PrintWatch va in stop o si spegne, l'analisi si ferma e
+il collegamento remoto smette di funzionare. Tailscale non tiene acceso il server.
+Per usarlo stabilmente installalo sul computer destinato a rimanere acceso,
+configura il risparmio energetico e verifica l'avvio automatico dopo il login.
+Un indirizzo IP fisso della stampante non risolve lo stop del computer.
+La [guida al funzionamento continuativo](DEPLOYMENT.md) elenca le prove necessarie.
