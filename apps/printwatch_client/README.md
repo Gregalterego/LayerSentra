@@ -66,3 +66,11 @@ web dashboard or reconnect the companion. The PTZ bridge is a separate prerequis
 The phone/desktop running this app must reach the server and, for private Tailscale
 URLs, be connected to the right tailnet. Each HTTP service can request its own login.
 No server or printer is deployed simply by installing the client.
+
+## Toolchain compatibility
+
+Android is pinned to AGP 8.13.2 / Gradle 8.13 / Kotlin 2.2.20 and API 36 because
+the stable WebView dependency still references the ProGuard filename removed in
+AGP 9. Windows applies Microsoft's transitional coroutine compatibility define
+to the pinned WebView plugin only; migrate it when upstream adopts standard
+coroutines. These settings are covered by the native build workflow.
