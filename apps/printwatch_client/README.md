@@ -8,7 +8,7 @@ server. This is not a standalone AI engine or a replacement for the server.
 
 - Connect to a user-supplied HTTPS server; no personal hosts or printer IPs bundled.
 - Native camera view, camera selection, printer progress and filament estimates.
-- Start/stop observation on PrintWatch server 0.3.0+, without enabling automatic pause.
+- Start/stop observation on PrintWatch server 0.4.0+, without enabling automatic pause.
 - LSC directional controls, disabled until a verified PTZ bridge is configured.
   See [PTZ requirements](../../PTZ.it.md). Direct LSC motion support is not claimed.
 - Embedded full Klipper controls; real printer commands are possible there.
@@ -57,7 +57,7 @@ repository's CI may build unsigned/test artifacts; it does not publish to stores
 ## Server update
 
 The camera and read-only status also work with server 0.2.0. The AI button requires
-server 0.3.0. For the previous macOS installation in `~/Applications/PrintWatch`,
+server 0.4.0. For the previous macOS installation in `~/Applications/PrintWatch`,
 extract a fresh source archive to a separate directory on that host and run
 `update-macos.command` from the repository root. It backs up code, refuses to
 update during an active/paused print and preserves data/models. Then reload the

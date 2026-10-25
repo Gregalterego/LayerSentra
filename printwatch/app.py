@@ -13,6 +13,7 @@ from .config import ROOT, load, save, validate
 from .decision import DecisionEngine, pause_allowed
 from .io import Moonraker, snapshot
 from .filament import Spool
+from .lsc import LSCBridge
 from .access import proxy_identity
 from .ptz import PTZ
 
@@ -142,6 +143,7 @@ class Monitor:
                     self.status['cameras'][cid]={'state':'error','error':str(error),'captured_at':None}
 
 monitor=Monitor()
+lsc_bridge=LSCBridge(ROOT/"data/lsc-camera.json")
 
 @app.before_request
 def local_access():
@@ -222,6 +224,17 @@ def config_post():
     try: monitor.configure(request.get_json()); return jsonify(ok=True)
     except (ValueError,TypeError,KeyError,AttributeError) as error: return jsonify(error=str(error)),400
 
+@app.get('/api/lsc/snapshot')
+def lsc_snapshot():
+    try: raw=lsc_bridge.snapshot()
+    except RuntimeError as error: return jsonify(error=str(error)),503
+    response=send_file(io.BytesIO(raw),mimetype='image/jpeg')
+    response.headers['Cache-Control']='no-store'
+    return response
+
+@app.get('/api/lsc/status')
+def lsc_status(): return jsonify(lsc_bridge.status())
+
 @app.get('/api/frame/<cid>')
 def frame(cid):
     with monitor.lock:
@@ -271,10 +284,12 @@ def main():
     logging.getLogger('werkzeug').setLevel(logging.ERROR)
     import subprocess,sys
     gateway=subprocess.Popen([sys.executable,'-m','printwatch.gateway'],cwd=ROOT)
+    lsc_bridge.start()
     thread=threading.Thread(target=monitor.run,daemon=True); thread.start()
     try: app.run(host='127.0.0.1',port=7127,debug=False,use_reloader=False,threaded=True)
     finally:
         monitor.stop.set(); thread.join(timeout=12)
+        lsc_bridge.close()
         gateway.terminate()
         try: gateway.wait(timeout=5)
         except subprocess.TimeoutExpired: gateway.kill(); gateway.wait()

@@ -332,7 +332,7 @@ class _MonitorPageState extends State<MonitorPage> with WidgetsBindingObserver {
       final token = configuration?['observation_token'] as String?;
       if (token == null) {
         throw StateError(
-          'Aggiorna il server PrintWatch alla versione 0.3.0 per il controllo AI remoto.',
+          'Aggiorna il server PrintWatch alla versione 0.4.0 per il controllo AI remoto.',
         );
       }
       await api.observe(status?['monitoring'] != true, token);

@@ -72,6 +72,13 @@ At normal startup, monitoring and automatic pause are disabled. Use
 forces observe-only mode. Automatic pause is optional, requires temporal confirmation
 and checks the printer state. Real pause operation is not part of the public tests.
 
+## Optional LSC / Anyka camera
+
+An optional local bridge converts a compatible camera’s LSC1/H.264 stream into
+fresh JPEG snapshots. The second camera uses the same AI, ROI, masks and temporal
+confirmation pipeline as the main camera. See the [camera setup guide](docs/LSC-CAMERA.md).
+Pan/tilt remains controlled by the vendor app; camera binaries are not bundled.
+
 ## Printer UI and camera embedding
 
 Click **Pannello Klipper completo** to open the printer's own UI. The local proxy
@@ -176,12 +183,12 @@ repository contains no user configuration, host identities, trained models or lo
 
 The [Flutter client](apps/printwatch_client) targets iOS, Android, macOS and Windows,
 with camera/status/filament views and the full embedded Klipper interface. Server
-0.3.0 adds scoped remote start/stop of observation; automatic pause cannot be enabled
+0.4.0 adds scoped remote start/stop of observation; automatic pause cannot be enabled
 through that endpoint. General remote settings remain blocked. Optional LSC direction
 buttons require a separately verified PTZ bridge; direct camera motion is not yet validated.
 Unsigned/test builds are distinct from signed store releases.
 
-### Remote controls in server 0.3.0
+### Remote controls in server 0.4.0
 
 The remote dashboard now permits only scoped observation start/stop and, when
 explicitly configured, PTZ pulse commands. These use separate tokens and the same

@@ -13,3 +13,17 @@ models/*
 *.sqlite*
 *.log
 .DS_Store
+
+# Camera integration and private captures
+*.lsc
+*.snapshot
+*.mp4
+*.mov
+*.jpg
+*.jpeg
+*.png
+*.bin
+*.onnx
+*.pt
+._*
+camera-sd/lsc-web/httpd.conf

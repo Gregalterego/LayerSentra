@@ -79,7 +79,7 @@ stop mentre alimentato, lasciando spegnere lo schermo.
 ## App iPhone, Android, Mac e Windows
 
 Il client nativo Flutter è in [apps/printwatch_client](apps/printwatch_client).
-Mostra camera, stato e filamento e include Klipper. Il server 0.3.0 consente
+Mostra camera, stato e filamento e include Klipper. Il server 0.4.0 consente
 Avvia/Ferma analisi AI anche da remoto: il comando forza la sola osservazione.
 La configurazione generale rimane riservata all’accesso locale. Le frecce LSC
 richiedono un [bridge PTZ verificato](PTZ.it.md), non incluso.
@@ -87,9 +87,22 @@ Per aggiornare l’installazione desktop esistente, estrai il nuovo sorgente sul
 server in una cartella separata ed esegui `update-macos.command`.
 Le build iPhone richiedono firma Apple; gli artefatti di test non sono pubblicazioni negli store.
 
-### Controlli remoti nel server 0.3.0
+### Controlli remoti nel server 0.4.0
 
 Il pannello remoto permette di avviare e fermare l’osservazione e, soltanto con un
 bridge configurato, inviare brevi impulsi PTZ. Queste operazioni usano token distinti
 e gli stessi controlli di identità e origine. La modifica generale dei parametri
 rimane bloccata. Avviare o fermare l’analisi forza sempre la sola osservazione.
+
+## Seconda telecamera LSC / Anyka
+
+Il bridge locale trasforma il flusso LSC1/H.264 di una telecamera compatibile in
+immagini JPEG aggiornate. La seconda camera usa la stessa analisi AI, maschere,
+soglie e conferma temporale della principale. La rotazione resta gestita
+dall’app della telecamera. Segui la [guida completa](docs/LSC-CAMERA.md): richiede
+un bootstrap SD già funzionante, un reader compatibile e FFmpeg sul computer.
+I programmi della telecamera e il modello AI non sono inclusi.
+
+Configurazioni reali, password, registrazioni, pesi del modello e dati locali
+restano esclusi dalla pubblicazione. Copia gli esempi in `data/` e sostituisci
+i segnaposto soltanto nella tua installazione.

@@ -60,7 +60,7 @@ References: [Caddy authentication](https://caddyserver.com/docs/caddyfile/direct
 [Caddy reverse proxy](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy),
 [systemd services](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html).
 
-### Remote controls in server 0.3.0
+### Remote controls in server 0.4.0
 
 The remote dashboard now permits only scoped observation start/stop and, when
 explicitly configured, PTZ pulse commands. These use separate tokens and the same
