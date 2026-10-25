@@ -78,6 +78,8 @@ stop mentre alimentato, lasciando spegnere lo schermo.
 
 ## App iPhone, Android, Mac e Windows
 
+[Pacchetti, installazione e limiti delle build di prova](APPS.it.md).
+
 Il client nativo Flutter è in [apps/printwatch_client](apps/printwatch_client).
 Mostra camera, stato e filamento e include Klipper. Il server 0.4.0 consente
 Avvia/Ferma analisi AI anche da remoto: il comando forza la sola osservazione.

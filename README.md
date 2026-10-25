@@ -181,6 +181,8 @@ repository contains no user configuration, host identities, trained models or lo
 
 ## Native companion apps
 
+[Native app packages and setup (Italian)](APPS.it.md).
+
 The [Flutter client](apps/printwatch_client) targets iOS, Android, macOS and Windows,
 with camera/status/filament views and the full embedded Klipper interface. Server
 0.4.0 adds scoped remote start/stop of observation; automatic pause cannot be enabled
