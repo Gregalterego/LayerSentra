@@ -612,6 +612,17 @@ class _MonitorPageState extends State<MonitorPage> with WidgetsBindingObserver {
     appBar: AppBar(
       title: const Text('PrintWatch'),
       actions: [
+        TextButton.icon(
+          onPressed: status == null || changing || error != null
+              ? null
+              : _observe,
+          icon: Icon(
+            status?['monitoring'] == true
+                ? Icons.pause_circle_outline
+                : Icons.play_circle_outline,
+          ),
+          label: Text(status?['monitoring'] == true ? 'Ferma AI' : 'Avvia AI'),
+        ),
         IconButton(
           tooltip: 'Aggiorna',
           onPressed: () {

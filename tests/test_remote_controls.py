@@ -58,3 +58,10 @@ class PTZTests(unittest.TestCase):
                 self.assertEqual(post.call_count,1)
             cfg['bridge_auto_stop']=False;path.write_text(json.dumps(cfg))
             self.assertFalse(ptz.availability()['enabled'])
+
+    def test_malformed_local_settings_fail_closed(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'ptz.json'
+            for content in ('[]','null','{"enabled": true, "commands": []}'):
+                path.write_text(content)
+                self.assertFalse(PTZ(path).availability()['enabled'])

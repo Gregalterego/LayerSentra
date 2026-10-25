@@ -14,14 +14,16 @@ class PTZ:
     def settings(self):
         if not self.path.exists(): return None
         config = json.loads(self.path.read_text())
+        if not isinstance(config,dict): raise ValueError('Configurazione PTZ non valida')
         if config.get('enabled') is not True: return None
         if config.get('bridge_auto_stop') is not True:
             raise ValueError('Il bridge PTZ deve garantire arresto autonomo entro un secondo.')
         if config.get('camera_id') not in ('primary','secondary'):
             raise ValueError('camera_id PTZ non valido')
-        if set(config.get('commands', {})) != set(DIRECTIONS):
+        if not isinstance(config.get('commands'),dict) or set(config['commands']) != set(DIRECTIONS):
             raise ValueError('Configurare tutti i comandi PTZ, incluso stop')
         for url in config['commands'].values():
+            if not isinstance(url,str): raise ValueError('URL bridge PTZ non valido')
             parsed=urlsplit(url)
             if parsed.scheme not in ('http','https') or not parsed.hostname or parsed.username or parsed.password or parsed.fragment:
                 raise ValueError('URL bridge PTZ non valido')
