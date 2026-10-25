@@ -72,6 +72,13 @@ At normal startup, monitoring and automatic pause are disabled. Use
 forces observe-only mode. Automatic pause is optional, requires temporal confirmation
 and checks the printer state. Real pause operation is not part of the public tests.
 
+## Optional LSC / Anyka camera
+
+An optional local bridge converts a compatible camera’s LSC1/H.264 stream into
+fresh JPEG snapshots. The second camera uses the same AI, ROI, masks and temporal
+confirmation pipeline as the main camera. See the [camera setup guide](docs/LSC-CAMERA.md).
+Pan/tilt remains controlled by the vendor app; camera binaries are not bundled.
+
 ## Printer UI and camera embedding
 
 Click **Pannello Klipper completo** to open the printer's own UI. The local proxy

@@ -31,3 +31,11 @@ Generated files in data/ are private: never commit them. Remote dashboard writes
 remain forbidden; the separate gateway grants actual printer controls.
 Keep 7127/7128 inaccessible from the network. Do not forward arbitrary requests
 with a localhost Host to these services or bypass the proxy authentication.
+
+## LSC camera bridge
+
+Local camera secrets live only in ignored `data/lsc-camera.json`; the SD Basic
+authentication file is also ignored. Never forward the camera HTTP port to the
+Internet. Use a trusted LAN and a unique password. Bridge status responses do
+not expose camera addresses or credentials. Images older than eight seconds
+are refused, and repeated source timestamps do not refresh their age.
