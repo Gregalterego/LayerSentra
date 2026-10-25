@@ -75,3 +75,21 @@ alla stampante via VPN, HTTPS con password, avvio automatico Linux e verifiche.
 È incluso un generatore di configurazione privato; un semplice link o hosting
 statico non può eseguire il progetto. Il servizio Mac ora usa una protezione dallo
 stop mentre alimentato, lasciando spegnere lo schermo.
+
+## App iPhone, Android, Mac e Windows
+
+Il client nativo Flutter è in [apps/printwatch_client](apps/printwatch_client).
+Mostra camera, stato e filamento e include Klipper. Il server 0.3.0 consente
+Avvia/Ferma analisi AI anche da remoto: il comando forza la sola osservazione.
+La configurazione generale rimane riservata all’accesso locale. Le frecce LSC
+richiedono un [bridge PTZ verificato](PTZ.it.md), non incluso.
+Per aggiornare l’installazione desktop esistente, estrai il nuovo sorgente sul
+server in una cartella separata ed esegui `update-macos.command`.
+Le build iPhone richiedono firma Apple; gli artefatti di test non sono pubblicazioni negli store.
+
+### Controlli remoti nel server 0.3.0
+
+Il pannello remoto permette di avviare e fermare l’osservazione e, soltanto con un
+bridge configurato, inviare brevi impulsi PTZ. Queste operazioni usano token distinti
+e gli stessi controlli di identità e origine. La modifica generale dei parametri
+rimane bloccata. Avviare o fermare l’analisi forza sempre la sola osservazione.

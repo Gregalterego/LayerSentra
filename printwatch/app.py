@@ -14,12 +14,16 @@ from .decision import DecisionEngine, pause_allowed
 from .io import Moonraker, snapshot
 from .filament import Spool
 from .access import proxy_identity
+from .ptz import PTZ
 
 logging.basicConfig(level=logging.INFO,format='%(asctime)s %(levelname)s %(message)s')
 CONFIG_PATH=ROOT/'data/config.json'
 DB_PATH=ROOT/'data/events.sqlite3'
 DB_PATH.parent.mkdir(exist_ok=True)
 TOKEN=secrets.token_urlsafe(32)
+OBSERVATION_TOKEN=secrets.token_urlsafe(32)
+PTZ_TOKEN=secrets.token_urlsafe(32)
+ptz=PTZ()
 MOBILE_PATH=ROOT/'data/mobile-access.json'
 MOBILE=json.loads(MOBILE_PATH.read_text()) if MOBILE_PATH.exists() else {}
 app=Flask(__name__,static_folder=str(ROOT/'static'),static_url_path='/static')
@@ -152,14 +156,15 @@ def local_access():
             or request.headers.get('Tailscale-User-Login') != MOBILE['login']):
             return jsonify(error='Accesso remoto autenticato richiesto'),403
         g.mobile=True
-        if request.method not in ('GET','HEAD'):
+        if request.method not in ('GET','HEAD') and request.path not in ('/api/observation','/api/ptz'):
             return jsonify(error='La vista telefono è di sola lettura'),403
     origin=request.headers.get('Origin')
     expected=('https://'+MOBILE['hostname']) if g.mobile else request.host_url.rstrip('/')
     if origin and origin != expected:
         return jsonify(error='Origine non consentita'),403
     if request.method=='POST':
-        if not request.is_json or not secrets.compare_digest(request.headers.get('X-PrintWatch-Token',''),TOKEN):
+        expected_token=OBSERVATION_TOKEN if request.path == '/api/observation' else PTZ_TOKEN if request.path == '/api/ptz' else TOKEN
+        if not request.is_json or not secrets.compare_digest(request.headers.get('X-PrintWatch-Token',''),expected_token):
             return jsonify(error='Richiesta non autorizzata: ricaricare il pannello'),403
 
 @app.get('/')
@@ -179,7 +184,38 @@ def config_get():
         if g.mobile:
             cfg['moonraker_url']=''
             for camera in cfg['cameras']: camera['url']=''
-        return jsonify(config=cfg,token=None if g.mobile else TOKEN,read_only=g.mobile)
+        return jsonify(config=cfg,token=None if g.mobile else TOKEN,read_only=g.mobile,observation_token=OBSERVATION_TOKEN,ptz_token=PTZ_TOKEN if ptz.availability()['enabled'] else None,capabilities={'observation_control':True,'ptz':ptz.availability()})
+
+@app.post('/api/ptz')
+def ptz_post():
+    payload=request.get_json(silent=True)
+    if not isinstance(payload,dict) or set(payload) != {'direction'}:
+        return jsonify(error='Richiesta una sola direzione'),400
+    try:
+        ptz.move(payload['direction'])
+        with monitor.lock:
+            monitor.generation+=1
+            monitor.engine.reset()
+            monitor.fingerprints.clear()
+            monitor.frames.clear()
+            monitor.armed_at=time.monotonic()
+        return jsonify(ok=True)
+    except (ValueError,TypeError) as error:
+        return jsonify(error=str(error)),400
+    except Exception:
+        return jsonify(error='Bridge PTZ non raggiungibile; verificare la telecamera'),502
+
+@app.post('/api/observation')
+def observation_post():
+    payload=request.get_json(silent=True)
+    if not isinstance(payload,dict) or set(payload) != {'enabled'} or type(payload['enabled']) is not bool:
+        return jsonify(error='Richiesto soltanto enabled: true/false'),400
+    with monitor.lock:
+        cfg=copy.deepcopy(monitor.config)
+        cfg['monitoring']=payload['enabled']
+        cfg['action']='observe'
+        monitor.configure(cfg)
+    return jsonify(ok=True,monitoring=cfg['monitoring'],action='observe')
 
 @app.post('/api/config')
 def config_post():

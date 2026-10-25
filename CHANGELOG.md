@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 — 2026-10-25
+
+- Native Flutter companion source for iOS, Android, macOS and Windows.
+- Authenticated, scoped remote start/stop of AI observation, always forcing observe mode.
+- AI button is visible remotely and in the compact embedded camera bar.
+- Optional directional camera controls, disabled without an explicitly configured,
+  bounded-pulse PTZ bridge. No direct LSC PTZ compatibility is claimed.
+- macOS code update helper with backup, preserving models, local settings and history.
+- Native app build workflow and authorization/PTZ regression tests.
+
+
 ## 0.2.0 — 2026-10-25
 
 - Add personal-domain hosting with a private Caddy configuration generator.

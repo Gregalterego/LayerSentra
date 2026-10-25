@@ -171,3 +171,19 @@ Use an always-on desktop, local Linux server or a VPS with private access to the
 printer. The [hosting guide](HOSTING.md) includes an authenticated Caddy HTTPS
 configuration generator, a systemd service and deployment checks. The public
 repository contains no user configuration, host identities, trained models or logs.
+
+## Native companion apps
+
+The [Flutter client](apps/printwatch_client) targets iOS, Android, macOS and Windows,
+with camera/status/filament views and the full embedded Klipper interface. Server
+0.3.0 adds scoped remote start/stop of observation; automatic pause cannot be enabled
+through that endpoint. General remote settings remain blocked. Optional LSC direction
+buttons require a separately verified PTZ bridge; direct camera motion is not yet validated.
+Unsigned/test builds are distinct from signed store releases.
+
+### Remote controls in server 0.3.0
+
+The remote dashboard now permits only scoped observation start/stop and, when
+explicitly configured, PTZ pulse commands. These use separate tokens and the same
+remote authentication/origin checks. General configuration changes remain denied.
+Starting or stopping observation always forces observe-only mode.

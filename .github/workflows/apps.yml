@@ -1,0 +1,81 @@
+name: Native apps
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'apps/**'
+      - '.github/workflows/apps.yml'
+  pull_request:
+    paths:
+      - 'apps/**'
+      - '.github/workflows/apps.yml'
+permissions:
+  contents: read
+jobs:
+  builds:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: android
+            os: ubuntu-latest
+          - platform: windows
+            os: windows-latest
+          - platform: macos
+            os: macos-latest
+          - platform: ios
+            os: macos-latest
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: apps/printwatch_client
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        if: matrix.platform == 'android'
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: NuGet/setup-nuget@v2
+        if: matrix.platform == 'windows'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.7'
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+      - name: Build Android test APK
+        if: matrix.platform == 'android'
+        run: flutter build apk --debug
+      - name: Build Windows
+        if: matrix.platform == 'windows'
+        run: flutter build windows --release
+      - name: Build macOS
+        if: matrix.platform == 'macos'
+        run: flutter build macos --release
+      - name: Build unsigned iOS
+        if: matrix.platform == 'ios'
+        run: flutter build ios --release --no-codesign
+      - uses: actions/upload-artifact@v4
+        if: matrix.platform == 'android'
+        with:
+          name: PrintWatch-Android-test
+          path: apps/printwatch_client/build/app/outputs/flutter-apk/app-debug.apk
+      - uses: actions/upload-artifact@v4
+        if: matrix.platform == 'windows'
+        with:
+          name: PrintWatch-Windows
+          path: apps/printwatch_client/build/windows/x64/runner/Release/
+      - uses: actions/upload-artifact@v4
+        if: matrix.platform == 'macos'
+        with:
+          name: PrintWatch-macOS
+          path: apps/printwatch_client/build/macos/Build/Products/Release/PrintWatch.app/
+      - uses: actions/upload-artifact@v4
+        if: matrix.platform == 'ios'
+        with:
+          name: PrintWatch-iOS-unsigned
+          path: apps/printwatch_client/build/ios/iphoneos/Runner.app/

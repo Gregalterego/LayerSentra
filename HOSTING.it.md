@@ -139,3 +139,10 @@ alimentato, ma richiede l'accesso dell'utente dopo un riavvio.
 La modalità con dominio include test automatici dell'autorizzazione e generazione
 della configurazione. Non costituisce una certificazione di un'installazione pubblica:
 DNS, certificati, autenticazione e riavvio vanno verificati sul proprio server.
+
+### Controlli remoti nel server 0.3.0
+
+Il pannello remoto permette di avviare e fermare l’osservazione e, soltanto con un
+bridge configurato, inviare brevi impulsi PTZ. Queste operazioni usano token distinti
+e gli stessi controlli di identità e origine. La modifica generale dei parametri
+rimane bloccata. Avviare o fermare l’analisi forza sempre la sola osservazione.

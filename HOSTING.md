@@ -59,3 +59,10 @@ network traffic are independent of this free software.
 References: [Caddy authentication](https://caddyserver.com/docs/caddyfile/directives/basic_auth),
 [Caddy reverse proxy](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy),
 [systemd services](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html).
+
+### Remote controls in server 0.3.0
+
+The remote dashboard now permits only scoped observation start/stop and, when
+explicitly configured, PTZ pulse commands. These use separate tokens and the same
+remote authentication/origin checks. General configuration changes remain denied.
+Starting or stopping observation always forces observe-only mode.
