@@ -27,7 +27,7 @@ merge its site blocks if you already host other sites. Restart PrintWatch. The
 generator refuses to overwrite an existing remote identity or generated Caddyfile.
 Do not share generated files; both are private and excluded from Git.
 
-The HTTPS dashboard on port 443 is read-only. The HTTPS printer gateway on 8443
+The HTTPS dashboard on port 443 permits viewing and scoped observation controls. The HTTPS printer gateway on 8443
 allows real printer controls. Both require HTTP Basic Authentication. Authenticate
 to the 8443 site in a separate tab before embedding it. Phone apps must support
 HTTPS, custom ports and Basic Auth; otherwise use the browser or private Tailscale.

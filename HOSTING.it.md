@@ -89,7 +89,7 @@ sostituirlo. Riavvia PrintWatch affinché legga la nuova identità remota.
 
 Gli indirizzi risultanti sono:
 
-- `https://stampa.example.org/`: video, AI e filamento, in sola lettura.
+- `https://stampa.example.org/`: video, AI, filamento e controllo della sola osservazione.
 - `https://stampa.example.org:8443/`: pannello completo e comandi reali alla stampante.
 - `https://stampa.example.org/?embed=camera`: vista grande da aggiungere a Fluidd.
 

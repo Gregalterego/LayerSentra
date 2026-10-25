@@ -42,7 +42,7 @@ L'accesso privato opzionale con Tailscale si prepara con:
 ```
 
 Il comando ricava dal tuo account il nome del tuo computer: non contiene nomi o IP
-di altre persone. La vista AI remota è di sola lettura. Il pannello stampante
+di altre persone. La vista AI remota permette anche di avviare e fermare la sola osservazione. Il pannello stampante
 separato permette comandi reali, soltanto all'identità proprietaria configurata.
 Vedi prerequisiti e comportamento nel [README completo](README.md).
 

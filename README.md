@@ -19,7 +19,7 @@ No AI cloud service, subscription or demo timer is required by PrintWatch.
 - Filament sensor status, reported print consumption, slicer-based material needed,
   manually initialized spool accounting and estimated remaining runtime.
 - SQLite event history, JSON export and labelled-frame evaluation tooling.
-- Optional private Tailscale access. The AI dashboard is read-only remotely;
+- Optional private Tailscale access. The remote AI dashboard permits viewing and scoped observation controls;
   the separate printer UI provides real printer controls to the configured owner.
 
 **A trained AI model is not included.** Bring a compatible model you are authorized
