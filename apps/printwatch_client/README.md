@@ -69,7 +69,7 @@ No server or printer is deployed simply by installing the client.
 
 ## Toolchain compatibility
 
-Android is pinned to AGP 8.13.2 / Gradle 8.13 / Kotlin 2.2.20 and API 36 because
+Android is pinned to AGP 8.13.2 / Gradle 8.14.6 / Kotlin 2.2.20 and API 36 because
 the stable WebView dependency still references the ProGuard filename removed in
 AGP 9. Windows applies Microsoft's transitional coroutine compatibility define
 to the pinned WebView plugin only; migrate it when upstream adopts standard
