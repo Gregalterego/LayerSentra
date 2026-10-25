@@ -1,0 +1,6 @@
+{
+  "url": "http://camera.local:8080/cgi-bin/capture.cgi",
+  "username": "camera",
+  "password": "REPLACE_WITH_YOUR_LOCAL_PASSWORD",
+  "ffmpeg": "/absolute/path/to/ffmpeg"
+}
