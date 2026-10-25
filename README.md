@@ -4,7 +4,7 @@ Local AI print monitoring for Klipper printers, with a large camera view, a full
 Fluidd/Mainsail control panel, and filament accounting. Runs on your own computer.
 No AI cloud service, subscription or demo timer is required by PrintWatch.
 
-[Guida in italiano](README.it.md) · [MIT license](LICENSE)
+[Guida in italiano](README.it.md) · [Own server / domain](HOSTING.md) · [MIT license](LICENSE)
 
 ## What it does
 
@@ -164,3 +164,10 @@ PrintWatch cannot monitor while its host computer is asleep or off. Tailscale do
 not change that. For a permanent installation, deploy on an always-awake desktop
 or other suitable host and test service startup and phone access on that host.
 See [continuous deployment checklist](DEPLOYMENT.md) before relying on unattended monitoring.
+
+## Host it on your own server
+
+Use an always-on desktop, local Linux server or a VPS with private access to the
+printer. The [hosting guide](HOSTING.md) includes an authenticated Caddy HTTPS
+configuration generator, a systemd service and deployment checks. The public
+repository contains no user configuration, host identities, trained models or logs.

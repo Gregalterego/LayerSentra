@@ -16,8 +16,8 @@ a DHCP reservation in the router. An address reservation alone does not start an
 1. Install Python 3.12 and PrintWatch on the destination computer, not on a different laptop.
 2. Set the destination's own printer and camera addresses in the local dashboard.
 3. Add a compatible model with appropriate usage rights and verify live observation.
-4. Configure the desktop's power settings so that the system stays awake while on
-   mains power, while permitting display sleep. Verify the actual behavior on its macOS version.
+4. The startup helper uses `caffeinate -s` to prevent system sleep while on mains
+   power, while permitting display sleep. Verify the actual behavior on the host.
 5. Run `enable-autostart.command` only after checking that another copy is not running.
    It installs a user LaunchAgent and starts observe-only monitoring after that user logs in.
 6. For remote access, configure Tailscale on the destination and run
@@ -26,7 +26,8 @@ a DHCP reservation in the router. An address reservation alone does not start an
 7. Stop the old installation when the new one has been tested, to avoid duplicate monitoring.
 
 The startup helper does not configure automatic OS login, bypass FileVault, unlock
-the computer after a power loss, or change power settings. A user login/unlock can
+the computer after a power loss, or change global power settings. Its sleep assertion
+lasts while the service is running and does not prevent manual shutdown. A user login/unlock can
 still be necessary following a reboot. Those limits must be tested before relying
 on unattended restart.
 
@@ -53,3 +54,17 @@ printer routes, and regenerate the host identity. Do not publish that data.
 
 Passing unit tests does not establish these deployment properties. A local user
 LaunchAgent is a convenience for desktop sessions, not a high-availability service.
+
+## Own server or domain
+
+See [HOSTING.md](HOSTING.md) or [the detailed Italian guide](HOSTING.it.md) for
+Linux systemd, a VPS with a VPN route, and authenticated HTTPS on a personal domain.
+A domain or static hosting link cannot replace an application server.
+
+## Exercised desktop migration
+
+An Apple Silicon desktop installation was checked with Python 3.12.15, live model
+inference and a working Klipper/Fluidd connection. The previous laptop process was
+stopped; the desktop dashboard, fresh snapshots, Moonraker API and WebSocket
+continued working while the desktop display was asleep. A complete desktop reboot
+and arbitrary Linux/cloud deployments have not been verified end to end.

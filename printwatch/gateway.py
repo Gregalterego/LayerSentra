@@ -6,6 +6,7 @@ import json
 from urllib.parse import urlsplit
 from aiohttp import web, ClientSession, ClientTimeout, WSMsgType
 from .config import ROOT,load
+from .access import proxy_identity, PROXY_HEADER
 
 HOP={'connection','keep-alive','proxy-authenticate','proxy-authorization','te','trailers','transfer-encoding','upgrade','host'}
 
@@ -13,7 +14,7 @@ def authorize(host,remote,headers,mobile):
     hostname=mobile.get('hostname'); local=host in ('127.0.0.1:7128','localhost:7128')
     expected='http://'+host
     if not local:
-        if (not hostname or host != hostname+':8443' or remote not in ('127.0.0.1','::1')
+        if not proxy_identity(host, remote, headers, mobile, panel=True) and (not hostname or host != hostname+':8443' or remote not in ('127.0.0.1','::1')
             or not mobile.get('login') or headers.get('Tailscale-User-Login') != mobile['login']): return False
         expected='https://'+hostname+':8443'
     origin=headers.get('Origin')
@@ -27,12 +28,12 @@ async def proxy(request):
     mobile_path=ROOT/'data/mobile-access.json'
     mobile=json.loads(mobile_path.read_text()) if mobile_path.exists() else {}
     if not authorize(request.host,request.remote,request.headers,mobile):
-        raise web.HTTPForbidden(text='Accesso Klipper consentito soltanto dal Mac o dal tuo account Tailscale.')
+        raise web.HTTPForbidden(text='Accesso Klipper consentito soltanto in locale o tramite accesso remoto autenticato.')
     cfg=load(ROOT/'data/config.json'); target=cfg['moonraker_url'].rstrip('/')
     parsed=urlsplit(target)
     if parsed.path not in ('','/'): raise web.HTTPBadGateway(text='Il proxy richiede l’indirizzo base della stampante senza sottopercorsi.')
     url=target+request.raw_path
-    headers={k:v for k,v in request.headers.items() if k.lower() not in HOP and not k.lower().startswith(('tailscale-','x-forwarded-'))}
+    headers={k:v for k,v in request.headers.items() if k.lower() not in HOP and not k.lower().startswith(('tailscale-','x-forwarded-')) and k.lower() != PROXY_HEADER.lower()}
     headers['Host']=parsed.netloc
     if request.path=='/': headers['Accept-Encoding']='identity'
     if 'Origin' in headers: headers['Origin']=target

@@ -66,3 +66,12 @@ Per usarlo stabilmente installalo sul computer destinato a rimanere acceso,
 configura il risparmio energetico e verifica l'avvio automatico dopo il login.
 Un indirizzo IP fisso della stampante non risolve lo stop del computer.
 La [guida al funzionamento continuativo](DEPLOYMENT.md) elenca le prove necessarie.
+
+## Server proprio, VPS o dominio personale
+
+Puoi ospitare PrintWatch sul tuo server e raggiungerlo con un tuo dominio. La
+[guida completa al self-hosting](HOSTING.it.md) spiega prerequisiti, collegamento
+alla stampante via VPN, HTTPS con password, avvio automatico Linux e verifiche.
+È incluso un generatore di configurazione privato; un semplice link o hosting
+statico non può eseguire il progetto. Il servizio Mac ora usa una protezione dallo
+stop mentre alimentato, lasciando spegnere lo schermo.

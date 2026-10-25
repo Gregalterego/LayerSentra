@@ -20,3 +20,14 @@ accuracy is not established by passing software tests. Automatic pause defaults 
 When reporting a security issue, provide a sanitized reproduction without secrets,
 private URLs, full camera images or personally identifying logs. Avoid public details
 that enable abuse of an unpatched installation.
+
+## Personal-domain deployments
+
+The optional self-host generator requires a same-machine Caddy proxy, HTTPS and
+Basic Authentication on both ports. A random upstream secret is checked with
+constant-time comparison, together with loopback source and exact Host. The
+proxy overwrites client-supplied identity headers and strips user credentials.
+Generated files in data/ are private: never commit them. Remote dashboard writes
+remain forbidden; the separate gateway grants actual printer controls.
+Keep 7127/7128 inaccessible from the network. Do not forward arbitrary requests
+with a localhost Host to these services or bypass the proxy authentication.

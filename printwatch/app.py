@@ -13,6 +13,7 @@ from .config import ROOT, load, save, validate
 from .decision import DecisionEngine, pause_allowed
 from .io import Moonraker, snapshot
 from .filament import Spool
+from .access import proxy_identity
 
 logging.basicConfig(level=logging.INFO,format='%(asctime)s %(levelname)s %(message)s')
 CONFIG_PATH=ROOT/'data/config.json'
@@ -145,11 +146,11 @@ def local_access():
     if request.host not in local_hosts:
         allowed_host=MOBILE.get('hostname')
         host=request.host.removesuffix(':443')
-        if (not allowed_host or host != allowed_host
+        if not proxy_identity(request.host, request.remote_addr, request.headers, MOBILE) and (not allowed_host or host != allowed_host
             or request.remote_addr not in ('127.0.0.1','::1')
             or not MOBILE.get('login')
             or request.headers.get('Tailscale-User-Login') != MOBILE['login']):
-            return jsonify(error='Accesso privato Tailscale richiesto'),403
+            return jsonify(error='Accesso remoto autenticato richiesto'),403
         g.mobile=True
         if request.method not in ('GET','HEAD'):
             return jsonify(error='La vista telefono è di sola lettura'),403

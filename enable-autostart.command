@@ -10,7 +10,7 @@ folder=Path.home()/'Library/LaunchAgents'
 folder.mkdir(parents=True,exist_ok=True)
 file=folder/'local.printwatch.observer.plist'
 if file.exists(): raise SystemExit('Esiste già un servizio PrintWatch: verificare la configurazione prima di sostituirlo.')
-config={'Label':'local.printwatch.observer','ProgramArguments':[str(root/'.venv/bin/python'),'-m','printwatch.app','--observe'],
+config={'Label':'local.printwatch.observer','ProgramArguments':['/usr/bin/caffeinate','-s',str(root/'.venv/bin/python'),'-m','printwatch.app','--observe'],
         'WorkingDirectory':str(root),'RunAtLoad':True,'KeepAlive':True,'ThrottleInterval':30,
         'StandardOutPath':str(root/'data/service.log'),'StandardErrorPath':str(root/'data/service-error.log'),
         'EnvironmentVariables':{'PATH':'/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin'}}
@@ -18,5 +18,5 @@ with file.open('xb') as f: plistlib.dump(config,f)
 try: subprocess.run(['launchctl','bootstrap',f'gui/{os.getuid()}',str(file)],check=True)
 except subprocess.CalledProcessError:
     raise SystemExit('File salvato, servizio non avviato. Serve una sessione grafica attiva dell’utente; verificare launchctl prima di riprovare.')
-print('Avvio automatico attivato al login dell’utente, esclusivamente in osservazione. Non impedisce la sospensione del Mac.')
+print('Avvio automatico attivato al login dell’utente, esclusivamente in osservazione. Impedisce lo stop per inattività mentre alimentato; lo schermo può spegnersi. Dopo un riavvio serve il login utente.')
 PY
