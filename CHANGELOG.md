@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0 — 2026-10-25
+
+- Added optional LSC1/H.264 to JPEG conversion using local FFmpeg.
+- Enabled compatible LSC cameras to use the existing multi-camera AI pipeline.
+- Added local bridge health and snapshot endpoints, source timestamp deduplication,
+  bounded parser inputs, reconnection and stale-image rejection.
+- Added camera setup documentation, sample configuration and SD startup/CGI source.
+- Added parser/freshness tests and a GitHub Actions unit-test workflow.
+- Prepared a source-only distribution excluding local settings, identities,
+  credentials, model weights, camera executables, firmware dumps and recordings.
+
+The camera bridge was exercised on macOS Apple Silicon with compatible Anyka
+hardware. This release does not claim validated failure-detection accuracy or
+unattended automatic-pause reliability.
+
+
+
 ## 0.2.0 — 2026-10-25
 
 - Add personal-domain hosting with a private Caddy configuration generator.

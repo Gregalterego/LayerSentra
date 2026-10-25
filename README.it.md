@@ -75,3 +75,16 @@ alla stampante via VPN, HTTPS con password, avvio automatico Linux e verifiche.
 È incluso un generatore di configurazione privato; un semplice link o hosting
 statico non può eseguire il progetto. Il servizio Mac ora usa una protezione dallo
 stop mentre alimentato, lasciando spegnere lo schermo.
+
+## Seconda telecamera LSC / Anyka
+
+Il bridge locale trasforma il flusso LSC1/H.264 di una telecamera compatibile in
+immagini JPEG aggiornate. La seconda camera usa la stessa analisi AI, maschere,
+soglie e conferma temporale della principale. La rotazione resta gestita
+dall’app della telecamera. Segui la [guida completa](docs/LSC-CAMERA.md): richiede
+un bootstrap SD già funzionante, un reader compatibile e FFmpeg sul computer.
+I programmi della telecamera e il modello AI non sono inclusi.
+
+Configurazioni reali, password, registrazioni, pesi del modello e dati locali
+restano esclusi dalla pubblicazione. Copia gli esempi in `data/` e sostituisci
+i segnaposto soltanto nella tua installazione.
