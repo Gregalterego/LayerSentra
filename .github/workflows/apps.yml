@@ -59,6 +59,19 @@ jobs:
       - name: Build unsigned iOS
         if: matrix.platform == 'ios'
         run: flutter build ios --release --no-codesign
+      - name: Package Apple apps preserving bundle links and permissions
+        if: matrix.platform == 'macos' || matrix.platform == 'ios'
+        shell: bash
+        run: |
+          if [ "${{ matrix.platform }}" = "macos" ]; then
+            ditto -c -k --sequesterRsrc --keepParent build/macos/Build/Products/Release/PrintWatch.app build/PrintWatch-macOS-test.zip
+          else
+            ditto -c -k --sequesterRsrc --keepParent build/ios/iphoneos/Runner.app build/PrintWatch-iOS-unsigned.zip
+          fi
+      - name: Package Windows portable app
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath build/PrintWatch-Windows-test.zip
       - uses: actions/upload-artifact@v4
         if: matrix.platform == 'android'
         with:
@@ -68,14 +81,14 @@ jobs:
         if: matrix.platform == 'windows'
         with:
           name: PrintWatch-Windows
-          path: apps/printwatch_client/build/windows/x64/runner/Release/
+          path: apps/printwatch_client/build/PrintWatch-Windows-test.zip
       - uses: actions/upload-artifact@v4
         if: matrix.platform == 'macos'
         with:
           name: PrintWatch-macOS
-          path: apps/printwatch_client/build/macos/Build/Products/Release/PrintWatch.app/
+          path: apps/printwatch_client/build/PrintWatch-macOS-test.zip
       - uses: actions/upload-artifact@v4
         if: matrix.platform == 'ios'
         with:
           name: PrintWatch-iOS-unsigned
-          path: apps/printwatch_client/build/ios/iphoneos/Runner.app/
+          path: apps/printwatch_client/build/PrintWatch-iOS-unsigned.zip
