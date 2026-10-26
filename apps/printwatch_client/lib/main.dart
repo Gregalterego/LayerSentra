@@ -6,6 +6,9 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'server.dart';
+import 'app_theme.dart';
+import 'brand.dart';
+import 'theme_tokens.dart';
 
 void main() => runApp(const PrintWatchApp());
 
@@ -15,14 +18,7 @@ class PrintWatchApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
     title: 'PrintWatch',
     debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xffb9ed80),
-        brightness: Brightness.dark,
-      ),
-      scaffoldBackgroundColor: const Color(0xff101b1f),
-      useMaterial3: true,
-    ),
+    theme: printWatchTheme(),
     home: const ConnectionPage(),
   );
 }
@@ -97,14 +93,10 @@ class _ConnectionPageState extends State<ConnectionPage> {
                 const Icon(
                   Icons.view_in_ar_rounded,
                   size: 64,
-                  color: Color(0xffb9ed80),
+                  color: PrintWatchColors.accent,
                 ),
                 const SizedBox(height: 22),
-                const Text(
-                  'PrintWatch',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
-                ),
+                const Center(child: DotWordmark(width: 280)),
                 const SizedBox(height: 12),
                 const Text(
                   'La tua stampa, sotto controllo.',
@@ -416,7 +408,10 @@ class _MonitorPageState extends State<MonitorPage> with WidgetsBindingObserver {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label),
+            Text(
+              label.toUpperCase(),
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
             const SizedBox(height: 8),
             Text(
               value,
@@ -478,7 +473,7 @@ class _MonitorPageState extends State<MonitorPage> with WidgetsBindingObserver {
         ),
         const SizedBox(height: 14),
         ClipRRect(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(22),
           child: AspectRatio(
             aspectRatio: 4 / 3,
             child: ColoredBox(
@@ -610,7 +605,10 @@ class _MonitorPageState extends State<MonitorPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: const Text('PrintWatch'),
+      title: const FittedBox(
+        fit: BoxFit.scaleDown,
+        child: DotWordmark(width: 160),
+      ),
       actions: [
         TextButton.icon(
           onPressed: status == null || changing || error != null

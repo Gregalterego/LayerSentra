@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0 — 2026-10-26
+
+- PrintWatch Dot visual identity across the web dashboard and all native clients.
+- Shared charcoal/grey/warm-white palette, high-contrast red actions and an original
+  dotted wordmark; original launcher icons for all four platforms.
+- Camera-first web layout and compact embedded controls with visible AI/details buttons.
+- Local, read-only design preview using synthetic data. No external font or brand assets.
+- Existing authentication, AI observation and PTZ capabilities are unchanged.
+
+
 ## 0.4.0 — 2026-10-25
 
 - Native Flutter companion source for iOS, Android, macOS and Windows.

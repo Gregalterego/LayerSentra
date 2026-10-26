@@ -1,0 +1,46 @@
+/* PrintWatch Dot: neutral surfaces, original dot wordmark, operational red. */
+body{background:var(--bg);font-family:Arial,Helvetica,sans-serif;letter-spacing:-.01em}
+header{padding:24px 0 20px;gap:20px}
+header h1{margin:12px 0 0;line-height:1}
+.wordmark{display:block;width:236px;max-width:65vw;height:auto}
+.eyebrow,small,.pill,.cameraInfo,th,.embedBar,button,.muted{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.eyebrow{color:var(--muted);font-size:10px;letter-spacing:1.7px}
+h2{font-weight:500;letter-spacing:-.6px}h3{font-weight:500}
+button{border-radius:999px;background:var(--action);color:#fff;font-size:13px;font-weight:600;min-height:44px;border:1px solid transparent;letter-spacing:.1px;transition:background .15s ease}
+button:hover{background:#da2532;filter:none}
+button.secondary{background:var(--raised);color:var(--text);border:1px solid var(--line)}
+button.secondary:hover{background:#363636}
+button:disabled{opacity:.55;cursor:not-allowed}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--text);outline-offset:4px}
+a{color:var(--accent);text-underline-offset:4px}
+.pill{background:var(--surface);font-size:11px;letter-spacing:.3px;border-radius:999px}
+.pill::before{content:"";display:inline-block;width:7px;height:7px;background:var(--accent);border-radius:50%;margin-right:8px}
+.viewTabs{gap:8px;margin-top:20px}.viewTabs button{min-height:38px}
+.intro{padding-top:28px}.intro h2{font-size:clamp(24px,3.2vw,42px);line-height:1.1;max-width:680px}
+#printer{color:var(--muted);font-size:13px;margin-top:12px}
+#notice{background:var(--surface);border-left:3px solid var(--accent);border-radius:0 14px 14px 0;color:var(--text);font-size:13px}
+.metrics{gap:10px}.metrics>div,.panel,.camera{background:var(--surface);border-color:var(--line);border-radius:var(--radius);box-shadow:none}
+.metrics>div{padding:19px 20px}.metrics small{font-size:10px;letter-spacing:1px;color:var(--muted)}
+.metrics strong{font-size:22px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.25;margin-top:12px}
+.camera{overflow:hidden}.cameraHead{padding:12px 18px}.cameraHead h3{font:12px ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.6px;text-transform:uppercase}
+.cameraHead button{min-height:34px;padding:7px 13px;font-size:11px}
+.cameraInfo{font-size:11px;color:var(--muted)}
+.viewport{background:#050505}.viewport .frameError{background:#101010ed}
+.panel{padding:22px}#filamentSensor{border-color:var(--accent);background:var(--raised);border-radius:0 12px 12px 0}
+dialog{background:var(--bg);border-radius:26px;border-color:var(--line)}dialog::backdrop{background:#000c}
+input,select,textarea{background:var(--bg);border-color:var(--line);border-radius:10px;color:var(--text);padding:11px}
+input[type=checkbox]{accent-color:var(--action)}#settingsError,#spoolError{color:#ff8c93}
+#klipperFrame{border-radius:18px}
+.ptzControls{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.ptzControls button{min-width:48px;min-height:48px;font-size:20px}
+.embedBar{background:var(--bg);gap:6px;padding:5px 8px}
+.embedBar button{background:var(--action)!important;color:#fff!important;border:1px solid #e94b55!important;box-shadow:none;min-height:32px;border-radius:999px!important}
+.embedBar button:hover{background:#da2532!important}
+body.camera-embed .cameraHead,body.camera-embed .cameraInfo{background:var(--surface)}
+body.camera-embed .cameraHead button{min-height:30px}
+body.camera-embed .embedBar span{flex:1}
+body.camera-embed .embedBar{padding-right:33px}
+@media(max-width:700px){header{align-items:center;padding:20px 0}.wordmark{width:180px}header .pill{max-width:43%;font-size:10px}.actions{width:100%;flex-wrap:wrap}.actions button{flex:1;white-space:nowrap}.metrics strong{font-size:18px}.panel{padding:16px}.intro h2{font-size:28px}.embedBar{flex-wrap:wrap}.embedBar span{flex-basis:100%!important}.embedBar button{min-height:34px!important}body.camera-embed .embedBar{padding-right:33px}body.camera-embed .metrics strong{font-size:14px}}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
+
+#cameras{margin-bottom:20px}body.camera-embed #cameras{margin-bottom:0}
+body.camera-embed .cameraHead button{border-radius:999px}

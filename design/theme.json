@@ -1,0 +1,13 @@
+{
+  "name": "PrintWatch Dot",
+  "background": "#101010",
+  "surface": "#1c1c1c",
+  "raised": "#292929",
+  "line": "#424242",
+  "text": "#f2f0eb",
+  "muted": "#b5b4af",
+  "accent": "#ff4b55",
+  "action": "#c41e2a",
+  "warning": "#f3c76a",
+  "radius": 22
+}

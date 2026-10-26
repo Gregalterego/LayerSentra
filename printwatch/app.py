@@ -187,7 +187,7 @@ def config_get():
             cfg['moonraker_url']=''
             for camera in cfg['cameras']: camera['url']=''
         ptz_status=ptz.availability()
-        return jsonify(config=cfg,token=None if g.mobile else TOKEN,read_only=g.mobile,observation_token=OBSERVATION_TOKEN,ptz_token=PTZ_TOKEN if ptz_status['enabled'] else None,capabilities={'observation_control':True,'ptz':ptz_status},server_version='0.4.0')
+        return jsonify(config=cfg,token=None if g.mobile else TOKEN,read_only=g.mobile,observation_token=OBSERVATION_TOKEN,ptz_token=PTZ_TOKEN if ptz_status['enabled'] else None,capabilities={'observation_control':True,'ptz':ptz_status},server_version='0.5.0')
 
 @app.post('/api/ptz')
 def ptz_post():

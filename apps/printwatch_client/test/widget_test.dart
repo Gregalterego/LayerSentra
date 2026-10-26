@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:printwatch_client/main.dart';
+import 'package:printwatch_client/brand.dart';
 import 'package:printwatch_client/server.dart';
 
 void main() {
@@ -26,7 +27,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(const PrintWatchApp());
     await tester.pumpAndSettle();
-    expect(find.text('PrintWatch'), findsOneWidget);
+    expect(find.byType(DotWordmark), findsOneWidget);
     expect(find.text('Collega la stampante'), findsOneWidget);
     final fields = tester.widgetList<TextField>(find.byType(TextField));
     expect(fields.every((field) => field.controller!.text.isEmpty), isTrue);
