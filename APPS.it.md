@@ -1,19 +1,20 @@
 # PrintWatch per iPhone, Android, Mac e Windows
 
-Il client nativo è sviluppato con Flutter. Si collega al tuo server PrintWatch,
+Il client nativo è sviluppato con Flutter. La versione 0.5.0 usa il tema PrintWatch Dot,
+con palette monocromatica, accenti rossi e marchio originale a punti. Vedi [DESIGN.md](DESIGN.md). Si collega al tuo server PrintWatch,
 mostra immagini, stato stampa e filamento, e incorpora il pannello completo Klipper.
 L'analisi AI continua sul server: il telefono o il portatile possono chiudere l'app.
 
-## Pacchetti della versione 0.4.0
+## Pacchetti della versione 0.5.0
 
-Le quattro compilazioni del workflow [Native apps](https://github.com/Gregalterego/PrintWatch/actions/runs/40208776288)
+Le quattro compilazioni del workflow [Native apps](https://github.com/Gregalterego/PrintWatch/actions/runs/40387710135)
 sono riuscite. La compilazione non equivale a un collaudo fisico di ogni dispositivo:
 la prova reale dell'interfaccia è stata eseguita su Mac, collegato a un server attivo.
 Nessun pacchetto è stato pubblicato negli store.
 
 | Piattaforma | Pacchetto | Come usarlo |
 | --- | --- | --- |
-| Android | `PrintWatch-Android-test.apk` | APK di debug per test; non è una release Google Play. |
+| Android | `PrintWatch-Android-test.zip` | Estrarre l’APK di debug per test; non è una release Google Play. |
 | Windows | `PrintWatch-Windows-test.zip` | Estrarre tutta la cartella e aprire `printwatch_client.exe`. Conservare DLL e `data` accanto all'eseguibile. Richiede Microsoft WebView2. |
 | Mac | `PrintWatch-macOS-test.zip` | Estrarre `PrintWatch.app`. Build di prova senza firma Developer ID e notarizzazione; macOS può richiedere una distribuzione firmata prima di consentirne l'apertura. |
 | iPhone | `PrintWatch-iOS-unsigned.zip` | Bundle senza firma per sviluppatori: non si installa direttamente su un normale iPhone. Serve firmare dal progetto Xcode con il proprio account autorizzato, oppure predisporre TestFlight/App Store. |

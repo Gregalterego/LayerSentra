@@ -1,5 +1,7 @@
 # PrintWatch — guida rapida
 
+Tema condiviso **PrintWatch Dot** per pannello e app: [direzione grafica](DESIGN.md).
+
 Software gratuito e open source con licenza MIT per monitorare stampanti Klipper
 con immagini, AI locale, pannello Fluidd/Mainsail e stima del filamento.
 
