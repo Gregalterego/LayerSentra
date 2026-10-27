@@ -50,7 +50,7 @@ monitoraggio abilitato, camera disponibile e una stampa attiva; in standby resta
 in attesa. Il servizio avviato con `--observe` riabilita l'osservazione al successivo
 avvio del processo: il comando Ferma non disattiva l'avvio automatico del servizio.
 
-Per una precedente installazione Mac in `~/Applications/LayerSentra`, estrai il nuovo
+Per una precedente installazione Mac in `~/Applications/LayerSentra` (o nel percorso storico `~/Applications/PrintWatch`), estrai il nuovo
 sorgente in una cartella separata sullo stesso server ed esegui `update-macos.command`.
 Lo script crea un backup del codice, conserva dati e modello e si ferma se rileva
 una stampa attiva o in pausa. Non aggiorna il computer remoto soltanto perché

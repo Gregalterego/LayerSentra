@@ -57,7 +57,7 @@ repository's CI may build unsigned/test artifacts; it does not publish to stores
 ## Server update
 
 The camera and read-only status also work with server 0.2.0. The AI button requires
-server 0.4.0. For the previous macOS installation in `~/Applications/LayerSentra`,
+server 0.4.0. For the previous macOS installation in `~/Applications/LayerSentra` (o nel percorso storico `~/Applications/PrintWatch`),
 extract a fresh source archive to a separate directory on that host and run
 `update-macos.command` from the repository root. It backs up code, refuses to
 update during an active/paused print and preserves data/models. Then reload the
