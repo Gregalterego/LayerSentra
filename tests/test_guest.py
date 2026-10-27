@@ -85,26 +85,12 @@ class GuestTests(unittest.TestCase):
             self.assertEqual(response.status_code,502)
             self.assertNotIn('private address',response.get_data(as_text=True))
 
-    def test_ptz_disabled_without_verified_camera_scope(self):
+    def test_ptz_not_exposed_even_when_owner_supports_it(self):
         self.login()
         with patch('layersentra.guest.requests.get') as get, patch('layersentra.guest.requests.post') as post:
-            get.return_value=Mock(status_code=200)
-            get.return_value.json.return_value={'ptz_token':'private','capabilities':{'ptz':{'enabled':True,'camera_id':'primary'}}}
-            self.assertEqual(self.post('/api/ptz',{'direction':'left'}).status_code,409)
-            post.assert_not_called()
-
-    def test_ptz_fixed_direction_private_token_and_no_redirect(self):
-        self.login()
-        with patch('layersentra.guest.requests.get') as get, patch('layersentra.guest.requests.post') as post:
-            get.return_value=Mock(status_code=200)
-            get.return_value.json.return_value={'ptz_token':'private','capabilities':{'ptz':{'enabled':True,'camera_id':'secondary'}}}
-            post.return_value=Mock(status_code=200)
-            self.assertEqual(self.post('/api/ptz',{'direction':'left','duration_ms':10000}).status_code,400)
-            self.assertEqual(self.post('/api/ptz',{'direction':'left'}).status_code,200)
-            self.assertEqual(post.call_args.kwargs['json'],{'direction':'left'})
-            self.assertFalse(post.call_args.kwargs['allow_redirects'])
-            self.assertEqual(self.post('/api/ptz',{'direction':'right'}).status_code,429)
-            self.assertEqual(self.post('/api/ptz',{'direction':'stop'}).status_code,200)
+            self.assertEqual(self.post('/api/ptz',{'direction':'left'}).status_code,403)
+            self.assertEqual(self.client.get('/api/ptz',base_url=self.base).status_code,403)
+            get.assert_not_called(); post.assert_not_called()
 
     def test_status_redacts_private_data(self):
         self.login()
@@ -115,7 +101,7 @@ class GuestTests(unittest.TestCase):
                  {'token':'admin-secret','ptz_token':None,'capabilities':{}}]
             response=self.client.get('/api/status',base_url=self.base)
             self.assertEqual(response.status_code,200)
-            self.assertTrue(response.json['camera_ready']);self.assertFalse(response.json['ptz'])
+            self.assertTrue(response.json['camera_ready']);self.assertNotIn('ptz',response.json)
             self.assertNotIn('private',response.get_data(as_text=True))
             self.assertNotIn('secret',response.get_data(as_text=True))
 

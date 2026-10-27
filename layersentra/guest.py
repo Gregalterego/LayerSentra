@@ -76,7 +76,7 @@ def create_app(settings_path=SETTINGS):
             return jsonify(error='Origine o formato non consentiti'), 403
         # Explicit allowlist is enforced before routing, including all unknown paths.
         if request.path not in ('/', '/guest.js', '/guest.css', '/session', '/api/status',
-                                '/api/frame', '/api/ptz', '/api/pause'):
+                                '/api/frame', '/api/pause'):
             return jsonify(error='Operazione non consentita'), 403
         if request.path in ('/', '/guest.js', '/guest.css', '/session'):
             return
@@ -126,24 +126,16 @@ def create_app(settings_path=SETTINGS):
             raise RuntimeError('Backend non disponibile')
         return response.json()
 
-    def ptz_info():
-        config = backend_json('/api/config')
-        ptz = config.get('capabilities', {}).get('ptz', {})
-        return config, bool(ptz.get('enabled') is True
-                            and ptz.get('camera_id') == cfg_now()['camera_id']
-                            and config.get('ptz_token'))
-
     @app.get('/api/status')
     def status():
         try:
             data = backend_json('/api/status')
-            _, enabled = ptz_info()
             cid = cfg_now()['camera_id']
             camera = data.get('cameras', {}).get(cid, {})
             age = time.time() - (camera.get('captured_at') or 0)
             fresh = camera.get('state') == 'ok' and 0 <= age <= 10
             return jsonify(state=data.get('printer', {}).get('state', 'unknown'),
-                           camera_ready=fresh, ptz=enabled, csrf=session['csrf'])
+                           camera_ready=fresh, csrf=session['csrf'])
         except Exception:
             return jsonify(error='Server o telecamera non disponibili'), 503
 
@@ -169,27 +161,6 @@ def create_app(settings_path=SETTINGS):
             return send_file(io.BytesIO(b''.join(parts)), mimetype='image/jpeg')
         except Exception:
             return jsonify(error='Immagine non aggiornata o non disponibile'), 503
-
-    @app.post('/api/ptz')
-    def ptz():
-        body = request.get_json(silent=True)
-        if (not isinstance(body, dict) or set(body) != {'direction'}
-                or body['direction'] not in ('left', 'right', 'up', 'down', 'stop')):
-            return jsonify(error='Direzione non valida'), 400
-        if body['direction'] != 'stop' and not allowed_rate('ptz', 1):
-            return jsonify(error='Attendere un secondo'), 429
-        try:
-            config, enabled = ptz_info()
-            if not enabled:
-                return jsonify(error='PTZ non collaudato o non configurato'), 409
-            response = requests.post(BACKEND + '/api/ptz', json=body,
-                headers={'X-LayerSentra-Token': config['ptz_token']},
-                timeout=(2, 6), allow_redirects=False)
-            if response.status_code != 200:
-                raise RuntimeError('PTZ non confermato')
-            return jsonify(ok=True)
-        except Exception:
-            return jsonify(error='Comando telecamera non confermato'), 502
 
     @app.post('/api/pause')
     def pause():
@@ -236,7 +207,7 @@ def main():
     except Exception:
         SETTINGS.unlink(missing_ok=True)
         raise
-    print('Invito riservato (chi possiede il link può usare video, PTZ e pausa):')
+    print('Invito riservato (chi possiede il link può usare video e pausa):')
     print(args.origin + '/#invite=' + token)
     print('Non ancora pubblicato: configurare e collaudare il servizio HTTPS separato.')
 
