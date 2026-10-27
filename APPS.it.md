@@ -7,8 +7,8 @@ L'analisi AI continua sul server: il telefono o il portatile possono chiudere l'
 
 ## Pacchetti della versione 0.6.0
 
-Le quattro compilazioni del workflow [Native apps](https://github.com/Gregalterego/LayerSentra/actions/runs/40387710135)
-sono riuscite. La compilazione non equivale a un collaudo fisico di ogni dispositivo:
+Le quattro compilazioni del workflow [Native apps](https://github.com/Gregalterego/LayerSentra/actions/runs/40463236477)
+producono i pacchetti elencati sotto. Controllare l’esito del workflow prima di scaricarli. La compilazione non equivale a un collaudo fisico di ogni dispositivo:
 la prova reale dell'interfaccia è stata eseguita su Mac, collegato a un server attivo.
 Nessun pacchetto è stato pubblicato negli store.
 
