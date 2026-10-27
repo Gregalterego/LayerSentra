@@ -54,6 +54,23 @@ class GuestTests(unittest.TestCase):
             self.assertIn(self.post('/api/pause',{}).status_code,(401,403))
             self.cfg=previous;self.write()
 
+    def test_permanent_invite_still_has_bounded_session_and_can_be_revoked(self):
+        self.cfg['expires_at'] = None
+        self.write()
+        self.login()
+        with self.client.session_transaction(base_url=self.base) as session:
+            self.assertLessEqual(session['until'], time.time() + 8 * 3600)
+            self.assertGreater(session['until'], time.time() + 7 * 3600)
+        self.cfg['enabled'] = False
+        self.write()
+        self.assertEqual(self.post('/api/pause', {}).status_code, 403)
+
+    def test_invalid_expiry_fails_closed(self):
+        for value in (True, 'never', float('inf')):
+            self.cfg['expires_at'] = value
+            self.write()
+            self.assertEqual(self.client.get('/', base_url=self.base).status_code, 403)
+
     def test_origin_csrf_and_host_required(self):
         self.login()
         with patch('layersentra.guest.Moonraker') as moon:

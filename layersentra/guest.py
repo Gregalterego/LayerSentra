@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import io
 import json
+import math
 import os
 import secrets
 import threading
@@ -33,6 +34,10 @@ def read_settings(path):
         raise ValueError('Chiavi ospite non valide')
     if cfg['camera_id'] not in ('primary', 'secondary'):
         raise ValueError('Camera non valida')
+    expiry = cfg.get('expires_at', 'missing')
+    if expiry is not None and (isinstance(expiry, bool) or not isinstance(expiry, (int, float))
+                               or not math.isfinite(expiry)):
+        raise ValueError('Scadenza ospite non valida')
     return cfg
 
 
@@ -58,7 +63,7 @@ def create_app(settings_path=SETTINGS):
 
     def cfg_now():
         cfg = read_settings(settings_path)
-        if cfg.get('enabled') is not True or cfg['expires_at'] <= time.time():
+        if cfg.get('enabled') is not True or (cfg['expires_at'] is not None and cfg['expires_at'] <= time.time()):
             raise ValueError('Invito scaduto o revocato')
         return cfg
 
@@ -116,7 +121,10 @@ def create_app(settings_path=SETTINGS):
                 or not secrets.compare_digest(digest(body['token']), cfg['token_hash'])):
             return jsonify(error='Invito non valido'), 403
         session.clear()
-        session.update(grant=cfg['token_hash'], until=min(time.time() + 8 * 3600, cfg['expires_at']),
+        until = time.time() + 8 * 3600
+        if cfg['expires_at'] is not None:
+            until = min(until, cfg['expires_at'])
+        session.update(grant=cfg['token_hash'], until=until,
                        csrf=secrets.token_urlsafe(32))
         return jsonify(ok=True)
 
@@ -190,12 +198,13 @@ def main():
     parser.add_argument('--origin', required=True, help='Origine HTTPS dedicata agli ospiti')
     parser.add_argument('--camera', choices=['primary', 'secondary'], default='secondary')
     parser.add_argument('--hours', type=int, default=24)
+    parser.add_argument('--permanent', action='store_true', help='Invito senza scadenza automatica, sempre revocabile')
     args = parser.parse_args()
     if not 1 <= args.hours <= 168:
         parser.error('Durata tra 1 e 168 ore')
     token = secrets.token_urlsafe(32)
     cfg = dict(origin=args.origin, camera_id=args.camera, enabled=True,
-               expires_at=time.time() + args.hours * 3600, token_hash=digest(token),
+               expires_at=None if args.permanent else time.time() + args.hours * 3600, token_hash=digest(token),
                session_key=secrets.token_urlsafe(48))
     SETTINGS.parent.mkdir(exist_ok=True)
     # Refuse replacement: revocation/rotation must be deliberate on the host.
