@@ -70,3 +70,15 @@ con permessi 0600, e NON abilita Funnel ne modifica Serve.
 video reale, l’accesso anonimo negato e i percorsi vietati. Non preme pausa e non
 invia altri comandi alla stampante. La pausa reale va collaudata separatamente in
 una prova autorizzata. La visibilita del pulsante e fissa in basso anche su telefono.
+
+## Invito senza scadenza automatica
+
+Solo dopo esplicita scelta del proprietario, `--permanent` genera un invito con
+`expires_at: null`. Il link resta revocabile con `enabled: false` o cambiando
+l’invito; non usare numeri infiniti o scadenze inventate. Le sessioni del browser
+restano limitate a otto ore: basta riaprire lo stesso link completo per rientrare.
+`tools/guest-permanent.py` aggiorna una installazione ospite esistente con backup,
+conserva l’invito e riavvia soltanto il servizio ospite. Non attiva l’accesso Internet.
+`tools/guest-publish.py` pubblica la sola porta ospite10000 dopo autorizzazione;
+rifiuta di sostituire una porta gia configurata e verifica che443/8443restino private.
+Su macOS avvia il programma Tailscale dal percorso canonico con maiuscole corrette.
