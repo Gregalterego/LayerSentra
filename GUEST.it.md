@@ -1,7 +1,8 @@
 # Accesso ospite: telecamera e pausa manuale
 
-Codice predisposto, non installato né collaudato su dispositivi reali. Nessun link
-attivo viene creato dal download. Nessuna modifica al server in funzione.
+Il download del codice non crea un link attivo. Il servizio ospite viene installato
+separatamente dal monitor principale e ascolta soltanto su localhost finché non
+si configura esplicitamente un proxy HTTPS pubblico.
 
 Servizio separato dal pannello proprietario: espone soltanto immagini della camera
 scelta, stato essenziale e pausa manuale. Non espone Fluidd,
@@ -50,3 +51,22 @@ compatibilità con un proxy pubblico e i dispositivi reali resta da collaudare.
 
 La pagina ospite espone solo video e il grande pulsante rosso «PAUSA STAMPA».
 I comandi di movimento non sono disponibili neppure tramite chiamate dirette.
+
+## Installazione separata su macOS
+
+Sul computer proprietario con il server gia funzionante, `python tools/guest-install.py`
+prepara `~/Applications/LayerSentraGuest`, un ambiente Python indipendente e il
+LaunchAgent `local.layersentra.guest`. Usa il Python dell’installazione esistente
+per eseguire lo script, se Python non e disponibile nel sistema. Rifiuta di
+sovrascrivere un’installazione ospite presente o una porta 7130 occupata.
+Il servizio principale non viene aggiornato o riavviato. La configurazione del
+proprietario viene copiata solo sullo stesso computer, con permessi privati.
+Il nome HTTPS viene ricavato dal client Tailscale locale; il servizio ospite usa
+una porta HTTPS dedicata 10000, da verificare libera prima di configurare il tunnel.
+Questo installatore prepara un invito di sette giorni, salvato in un file locale
+con permessi 0600, e NON abilita Funnel ne modifica Serve.
+
+`tools/guest-check.py`, eseguito con il Python dell’ambiente ospite, controlla il
+video reale, l’accesso anonimo negato e i percorsi vietati. Non preme pausa e non
+invia altri comandi alla stampante. La pausa reale va collaudata separatamente in
+una prova autorizzata. La visibilita del pulsante e fissa in basso anche su telefono.
