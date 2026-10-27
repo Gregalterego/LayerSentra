@@ -79,3 +79,14 @@ class Moonraker:
             if self.status()['state']=='paused': return True
             time.sleep(0.5)
         raise RuntimeError('Pausa inviata ma non confermata; controllare la stampante')
+
+    def resume(self):
+        # Resume only the existing paused job; never start a new file.
+        if self.status()['state'] != 'paused': raise RuntimeError('La stampante non e in pausa')
+        r=requests.post(self.url+'/printer/print/resume',timeout=(2,4)); r.raise_for_status()
+        payload=r.json()
+        if 'error' in payload or payload.get('result') != 'ok': raise RuntimeError('Moonraker non ha accettato la ripresa')
+        for _ in range(3):
+            if self.status()['state']=='printing': return True
+            time.sleep(0.5)
+        raise RuntimeError('Ripresa inviata ma non confermata; controllare la stampante')
