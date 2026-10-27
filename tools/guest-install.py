@@ -39,7 +39,7 @@ def main():
     hostname = network['Self']['DNSName'].rstrip('.')
     if not hostname.endswith('.ts.net'):
         raise SystemExit('Nome HTTPS Tailscale non valido: non pubblicare.')
-    origin = 'https://' + hostname + ':10000' 
+    origin = 'https://' + hostname + ':10000'
     # Fetch only known source files at an immutable, reviewed commit.
     revision = '12b48f067dfb7d8105674d1153c810cf178aa073'
     base = 'https://raw.githubusercontent.com/Gregalterego/LayerSentra/' + revision + '/'
