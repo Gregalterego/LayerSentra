@@ -1,12 +1,12 @@
-# Accesso ospite: telecamera e pausa manuale
+# Accesso ospite: telecamere, pausa e ripresa
 
 Il download del codice non crea un link attivo. Il servizio ospite viene installato
 separatamente dal monitor principale e ascolta soltanto su localhost finché non
 si configura esplicitamente un proxy HTTPS pubblico.
 
 Servizio separato dal pannello proprietario: espone soltanto immagini della camera
-scelta, stato essenziale e pausa manuale. Non espone Fluidd,
-G-code, configurazione, filamento, file, ripresa/cancellazione o controllo AI.
+scelta, stato essenziale, pausa manuale e, solo se abilitata dal proprietario, ripresa. Non espone Fluidd,
+G-code, configurazione, filamento, file, cancellazione o controllo AI.
 La pausa usa l'indirizzo Moonraker già configurato sullo stesso host e viene
 confermata rileggendo lo stato. Non è un arresto di emergenza e dipende dalla rete.
 
@@ -49,7 +49,8 @@ Non condividere il file privato. L'iMac deve rimanere acceso e connesso.
 I test verificano isolamento, autenticazione, revoca, CSRF, rifiuto dei comandi PTZ, rate limit, frame scaduti e pausa tramite Moonraker simulato. La
 compatibilità con un proxy pubblico e i dispositivi reali resta da collaudare.
 
-La pagina ospite espone solo video e il grande pulsante rosso «PAUSA STAMPA».
+La pagina ospite mostra i video, il grande pulsante rosso «PAUSA STAMPA» e, se
+autorizzato, il piccolo pulsante verde «RIPRENDI STAMPA».
 I comandi di movimento non sono disponibili neppure tramite chiamate dirette.
 
 ## Installazione separata su macOS
@@ -82,3 +83,28 @@ conserva l’invito e riavvia soltanto il servizio ospite. Non attiva l’access
 `tools/guest-publish.py` pubblica la sola porta ospite10000 dopo autorizzazione;
 rifiuta di sostituire una porta gia configurata e verifica che443/8443restino private.
 Su macOS avvia il programma Tailscale dal percorso canonico con maiuscole corrette.
+
+## Pressione continua di cinque secondi e seconda camera
+
+Entrambi i pulsanti richiedono una pressione continua di almeno cinque secondi.
+Il riempimento e il conto alla rovescia mostrano l’avanzamento. Rilasciare, uscire
+con il puntatore dal pulsante, cambiare scheda o perdere il collegamento annulla
+la pressione. Sono supportati mouse, tocco e tastiera (Spazio/Invio tenuti premuti).
+Un tocco breve non esegue comandi.
+
+Il server emette un permesso monouso legato alla sessione e all’azione: prima di
+cinque secondi, dopo venti secondi, dopo annullamento o al riutilizzo viene negato.
+Lo stato reale della stampante viene verificato di nuovo immediatamente prima
+del comando. La ripresa usa soltanto il lavoro gia in pausa, senza avviare file.
+
+La ripresa ospite richiede `can_resume: true` nel file privato: e negata per default.
+Le camere autorizzate sono definite da `camera_ids: ["primary", "secondary"]`.
+Non aggiungere URL nel client; ogni immagine viene letta dal servizio proprietario.
+Se una camera non risponde, l’altra resta visibile. Nessun comando PTZ e disponibile.
+
+`tools/guest-update-hold.py --enable-resume` aggiorna una installazione ospite
+esistente dopo esplicita autorizzazione per entrambe le camere e la ripresa:
+crea backup privati, conserva il link e la sua scadenza, riavvia solo il servizio
+ospite e ripristina il codice precedente se i controlli falliscono. Il pannello
+proprietario e Funnel non vengono modificati. I controlli di installazione non
+mettono in pausa o riprendono la stampante reale.

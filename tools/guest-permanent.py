@@ -9,16 +9,17 @@ import urllib.request
 root = Path.home() / 'Applications/LayerSentraGuest'
 settings = root / 'data/guest-access.json'
 cfg = json.loads(settings.read_text())
-revision = '0dd2ee28ddd3fa08941c8b44cf1da1f764d2380b'
-url = 'https://raw.githubusercontent.com/Gregalterego/LayerSentra/' + revision + '/layersentra/guest.py'
-with urllib.request.urlopen(url, timeout=30) as response:
-    code = response.read()
-compile(code, 'guest.py', 'exec')
-module = root / 'layersentra/guest.py'
-backup = module.with_suffix('.before-permanent.py')
-if not backup.exists():
-    backup.write_bytes(module.read_bytes())
-module.write_bytes(code)
+revision = 'd3e77c30fd8078b8a0462aa581b667034e6ac881'
+for filename in ('guest.py', 'io.py'):
+    url = 'https://raw.githubusercontent.com/Gregalterego/LayerSentra/' + revision + '/layersentra/' + filename
+    with urllib.request.urlopen(url, timeout=30) as response:
+        code = response.read()
+    compile(code, filename, 'exec')
+    module = root / 'layersentra' / filename
+    backup = module.with_suffix('.before-permanent.py')
+    if not backup.exists():
+        backup.write_bytes(module.read_bytes())
+    module.write_bytes(code)
 previous = settings.with_suffix('.before-permanent.json')
 if not previous.exists():
     previous.write_bytes(settings.read_bytes())
