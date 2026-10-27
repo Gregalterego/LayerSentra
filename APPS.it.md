@@ -1,23 +1,23 @@
-# PrintWatch per iPhone, Android, Mac e Windows
+# LayerSentra per iPhone, Android, Mac e Windows
 
-Il client nativo è sviluppato con Flutter. La versione 0.5.0 usa il tema PrintWatch Dot,
-con palette monocromatica, accenti rossi e marchio originale a punti. Vedi [DESIGN.md](DESIGN.md). Si collega al tuo server PrintWatch,
+Il client nativo è sviluppato con Flutter. La versione 0.6.0 usa il tema LayerSentra Dot,
+con palette monocromatica, accenti rossi e marchio originale a punti. Vedi [DESIGN.md](DESIGN.md). Si collega al tuo server LayerSentra,
 mostra immagini, stato stampa e filamento, e incorpora il pannello completo Klipper.
 L'analisi AI continua sul server: il telefono o il portatile possono chiudere l'app.
 
-## Pacchetti della versione 0.5.0
+## Pacchetti della versione 0.6.0
 
-Le quattro compilazioni del workflow [Native apps](https://github.com/Gregalterego/PrintWatch/actions/runs/40387710135)
+Le quattro compilazioni del workflow [Native apps](https://github.com/Gregalterego/LayerSentra/actions/runs/40387710135)
 sono riuscite. La compilazione non equivale a un collaudo fisico di ogni dispositivo:
 la prova reale dell'interfaccia è stata eseguita su Mac, collegato a un server attivo.
 Nessun pacchetto è stato pubblicato negli store.
 
 | Piattaforma | Pacchetto | Come usarlo |
 | --- | --- | --- |
-| Android | `PrintWatch-Android-test.zip` | Estrarre l’APK di debug per test; non è una release Google Play. |
-| Windows | `PrintWatch-Windows-test.zip` | Estrarre tutta la cartella e aprire `printwatch_client.exe`. Conservare DLL e `data` accanto all'eseguibile. Richiede Microsoft WebView2. |
-| Mac | `PrintWatch-macOS-test.zip` | Estrarre `PrintWatch.app`. Build di prova senza firma Developer ID e notarizzazione; macOS può richiedere una distribuzione firmata prima di consentirne l'apertura. |
-| iPhone | `PrintWatch-iOS-unsigned.zip` | Bundle senza firma per sviluppatori: non si installa direttamente su un normale iPhone. Serve firmare dal progetto Xcode con il proprio account autorizzato, oppure predisporre TestFlight/App Store. |
+| Android | `LayerSentra-Android-test.zip` | Estrarre l’APK di debug per test; non è una release Google Play. |
+| Windows | `LayerSentra-Windows-test.zip` | Estrarre tutta la cartella e aprire `layersentra.exe`. Conservare DLL e `data` accanto all'eseguibile. Richiede Microsoft WebView2. |
+| Mac | `LayerSentra-macOS-test.zip` | Estrarre `LayerSentra.app`. Build di prova senza firma Developer ID e notarizzazione; macOS può richiedere una distribuzione firmata prima di consentirne l'apertura. |
+| iPhone | `LayerSentra-iOS-unsigned.zip` | Bundle senza firma per sviluppatori: non si installa direttamente su un normale iPhone. Serve firmare dal progetto Xcode con il proprio account autorizzato, oppure predisporre TestFlight/App Store. |
 
 Non sono inclusi certificati, chiavi di firma o account sviluppatore. Il pacchetto
 Android usa una chiave di debug del sistema di compilazione: gli aggiornamenti di
@@ -27,7 +27,7 @@ per Apple firma e notarizzazione/distribuzione vanno configurate con il proprio 
 
 ## Primo collegamento
 
-1. Verifica che il server PrintWatch sia acceso e raggiungibile.
+1. Verifica che il server LayerSentra sia acceso e raggiungibile.
 2. Se usi un indirizzo privato Tailscale, collega anche il dispositivo alla tua rete Tailscale.
 3. Inserisci nell'app l'URL HTTPS della dashboard, senza password nell'indirizzo.
 4. Il pannello Klipper usa normalmente lo stesso nome con porta 8443. Puoi indicare un URL HTTPS diverso nel secondo campo.
@@ -50,7 +50,7 @@ monitoraggio abilitato, camera disponibile e una stampa attiva; in standby resta
 in attesa. Il servizio avviato con `--observe` riabilita l'osservazione al successivo
 avvio del processo: il comando Ferma non disattiva l'avvio automatico del servizio.
 
-Per una precedente installazione Mac in `~/Applications/PrintWatch`, estrai il nuovo
+Per una precedente installazione Mac in `~/Applications/LayerSentra`, estrai il nuovo
 sorgente in una cartella separata sullo stesso server ed esegui `update-macos.command`.
 Lo script crea un backup del codice, conserva dati e modello e si ferma se rileva
 una stampa attiva o in pausa. Non aggiorna il computer remoto soltanto perché
@@ -65,8 +65,8 @@ Vedi [requisiti e configurazione](PTZ.it.md).
 
 ## Codice e verifiche
 
-Il progetto è in [apps/printwatch_client](apps/printwatch_client). Sono stati eseguiti
-analisi Flutter senza segnalazioni, due test del client e 55 test del server.
+Il progetto è in [apps/layersentra_client](apps/layersentra_client). Sono stati eseguiti
+analisi Flutter senza segnalazioni, due test del client e 58 test del server.
 Le build native sono prodotte dai sistemi GitHub per le rispettive piattaforme.
 La firma pubblica e le prove su iPhone, Android e Windows reali restano separate
 dalle compilazioni e dalla prova Mac.

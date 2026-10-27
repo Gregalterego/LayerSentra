@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0 — 2026-10-27
+
+- Rename the project, repository, visible app names, wordmark and launch icons to LayerSentra.
+- Canonical Python module and Flutter project become layersentra / layersentra_client.
+- Preserve legacy launch commands, installed app identifiers and wire headers for migration.
+- Keep historical releases and data; macOS updater recognizes both installation names.
+
+Earlier entries below describe releases published under the former name.
+
+
 ## 0.5.0 — 2026-10-26
 
 - PrintWatch Dot visual identity across the web dashboard and all native clients.

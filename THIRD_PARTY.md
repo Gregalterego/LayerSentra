@@ -1,8 +1,8 @@
 # Third-party components and provenance
 
-PrintWatch code is distributed under the MIT license in LICENSE. Installed Python
+LayerSentra code is distributed under the MIT license in LICENSE. Installed Python
 packages keep their own licenses; requirements files identify the dependencies.
-Fluidd/Mainsail are not copied or distributed by PrintWatch: the optional proxy
+Fluidd/Mainsail are not copied or distributed by LayerSentra: the optional proxy
 shows the UI already installed on the user's printer.
 
 The project was inspired by and prototyped against
@@ -13,4 +13,4 @@ GitHub repository does not automatically grant model redistribution rights.
 
 FFmpeg, Tailscale, Python, Klipper and Moonraker are separate software. Install/use
 those according to their respective terms. Tailscale account features and pricing
-are external to this project; PrintWatch does not provide a Tailscale subscription.
+are external to this project; LayerSentra does not provide a Tailscale subscription.

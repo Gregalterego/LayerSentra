@@ -1,13 +1,13 @@
-# PrintWatch Dot
+# LayerSentra Dot
 
-Preferred visual direction for this project: an original PrintWatch identity
+Preferred visual direction for this project: an original LayerSentra identity
 inspired by the monochrome, dot-matrix and red-accent language the user referenced
-at https://it.nothing.tech/ and Nothing OS. Keep future PrintWatch screens consistent
+at https://it.nothing.tech/ and Nothing OS. Keep future LayerSentra screens consistent
 with this direction. Nothing logos, fonts, product photography and assets are not
 bundled or copied.
 
 - Charcoal background, neutral grey surfaces, warm white text and red actions.
-- Original 5×7 dotted PrintWatch wordmark. Body text stays solid and readable.
+- Original 5×7 dotted LayerSentra wordmark. Body text stays solid and readable.
 - Rounded cards, pill controls, technical monospace labels and tabular numbers.
 - Camera first; compact controls remain above or below the video in embedded mode.
 - Status and errors use text/icons as well as color. Do not encode state only in a red dot.
@@ -20,7 +20,7 @@ on the generated Dart files. `tools/generate_icons.py` exports original launcher
 icons with Pillow. There are no remote font, analytics or design-CDN dependencies.
 
 Web styling is in `static/dot-theme.css`. Native styling is in
-`apps/printwatch_client/lib/app_theme.dart`. Preview web layout using
+`apps/layersentra_client/lib/app_theme.dart`. Preview web layout using
 `python tools/preview_theme.py` at http://127.0.0.1:7135/ — this preview uses clearly
 labelled synthetic data and rejects all commands; it never connects to a printer.
 

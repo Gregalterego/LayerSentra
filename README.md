@@ -1,8 +1,10 @@
-# PrintWatch
+# LayerSentra
+
+[Passaggio dal nome precedente / migration](MIGRATION.it.md).
 
 Local AI print monitoring for Klipper printers, with a large camera view, a full
 Fluidd/Mainsail control panel, and filament accounting. Runs on your own computer.
-No AI cloud service, subscription or demo timer is required by PrintWatch.
+No AI cloud service, subscription or demo timer is required by LayerSentra.
 
 [Guida in italiano](README.it.md) · [Own server / domain](HOSTING.md) · [MIT license](LICENSE)
 
@@ -46,7 +48,7 @@ Clone or download this repository. In its directory:
 ```sh
 python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements.lock.txt
-.venv/bin/python -m printwatch.app
+.venv/bin/python -m layersentra.app
 ```
 
 On Intel macOS, use `requirements-intel.txt` instead of `requirements.lock.txt`.
@@ -68,7 +70,7 @@ services, firmware or macros are modified by installation. Printer UI commands,
 if used, act on the real machine.
 
 At normal startup, monitoring and automatic pause are disabled. Use
-`python -m printwatch.app --observe` to start observation explicitly; it always
+`python -m layersentra.app --observe` to start observation explicitly; it always
 forces observe-only mode. Automatic pause is optional, requires temporal confirmation
 and checks the printer state. Real pause operation is not part of the public tests.
 
@@ -83,9 +85,9 @@ Pan/tilt remains controlled by the vendor app; camera binaries are not bundled.
 
 Click **Pannello Klipper completo** to open the printer's own UI. The local proxy
 is **http://127.0.0.1:7128**. For camera embedding, add a **HTTP page / iframe** camera
-in Fluidd with a client-reachable URL for PrintWatch and the query `?embed=camera`.
+in Fluidd with a client-reachable URL for LayerSentra and the query `?embed=camera`.
 Use your private HTTPS address for phones. Do not use `127.0.0.1` unless the browser
-runs on the same computer as PrintWatch.
+runs on the same computer as LayerSentra.
 
 The compact layout puts the camera first and opens details via **Dati e filamento**.
 The proxy corrects the width of this iframe in older Fluidd layouts; it does not
@@ -95,7 +97,7 @@ HTML pages: `/api/frame/primary` supplies a JPEG snapshot instead, not an MJPEG 
 ## Filament: measured status versus estimated quantity
 
 Klipper's presence/motion sensors cannot tell how many grams are left. Disabled
-sensors are clearly shown as disabled; PrintWatch never enables them automatically.
+sensors are clearly shown as disabled; LayerSentra never enables them automatically.
 
 On the local dashboard, **Imposta bobina** records the material weight available
 *now*, excluding the empty spool. Subsequent reported consumption is subtracted
@@ -104,7 +106,7 @@ material is needed to finish. Low/insufficient spool warnings are displayed.
 Estimated runtime needs at least 30 seconds of observed printing, using up to five
 minutes of consumption history. It is not a physical scale or guaranteed ETA.
 
-Manual extrusion, unrecorded spool changes and prints completed while PrintWatch
+Manual extrusion, unrecorded spool changes and prints completed while LayerSentra
 was off can invalidate the estimate. Re-enter a known remaining weight. These
 warnings do not trigger push notifications or automatically pause a print.
 
@@ -113,14 +115,14 @@ warnings do not trigger push notifications or automatically pause a print.
 Install Tailscale and sign in on both the host and phone. Then run:
 
 ```sh
-.venv/bin/python -m printwatch.remote_setup --enable-serve
+.venv/bin/python -m layersentra.remote_setup --enable-serve
 ```
 
 This derives the current computer's name and owner from Tailscale, writes a local
 identity file excluded from Git, and requests Serve on HTTPS ports 443 and 8443.
 Tailscale may ask you to enable Serve/HTTPS in its account UI. Existing Serve rules
 must be reviewed for port conflicts before using this command. Public Funnel is not used.
-Restart PrintWatch after setup. The command prints your own private URLs.
+Restart LayerSentra after setup. The command prints your own private URLs.
 
 The AI view is remote read-only. Port 8443 is the full printer control panel and
 allows real printer actions; the proxy requires the configured owner identity.
@@ -130,7 +132,7 @@ Keep the backend bound to loopback. No credentials need to be committed to Git.
 
 ```sh
 .venv/bin/python -m unittest discover -s tests -v
-.venv/bin/python -m printwatch.evaluate dataset/manifest.json --output data/report.json
+.venv/bin/python -m layersentra.evaluate dataset/manifest.json --output data/report.json
 ```
 
 The tests exercise confirmation isolation, missing frames, pause gating, class-aware
@@ -167,7 +169,7 @@ sleep. No remote access or startup service is enabled just by downloading the re
 
 ## Continuous operation and laptop sleep
 
-PrintWatch cannot monitor while its host computer is asleep or off. Tailscale does
+LayerSentra cannot monitor while its host computer is asleep or off. Tailscale does
 not change that. For a permanent installation, deploy on an always-awake desktop
 or other suitable host and test service startup and phone access on that host.
 See [continuous deployment checklist](DEPLOYMENT.md) before relying on unattended monitoring.
@@ -183,7 +185,7 @@ repository contains no user configuration, host identities, trained models or lo
 
 [Native app packages and setup (Italian)](APPS.it.md).
 
-The [Flutter client](apps/printwatch_client) targets iOS, Android, macOS and Windows,
+The [Flutter client](apps/layersentra_client) targets iOS, Android, macOS and Windows,
 with camera/status/filament views and the full embedded Klipper interface. Server
 0.4.0 adds scoped remote start/stop of observation; automatic pause cannot be enabled
 through that endpoint. General remote settings remain blocked. Optional LSC direction

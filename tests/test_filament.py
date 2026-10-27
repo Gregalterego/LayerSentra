@@ -1,7 +1,7 @@
 import tempfile
 import unittest
 from pathlib import Path
-from printwatch.filament import Spool, grams
+from layersentra.filament import Spool, grams
 
 CFG={'diameter_mm':1.75,'density_g_cm3':1.27,'low_warning_g':100}
 class FilamentTests(unittest.TestCase):
@@ -38,7 +38,7 @@ class FilamentTests(unittest.TestCase):
  def test_eta_needs_observed_printing_and_resets_on_pause(self):
   from unittest.mock import patch
   self.s.set_remaining(100,self.printer(1000))
-  with patch('printwatch.filament.time.monotonic',side_effect=[0,30,40]):
+  with patch('layersentra.filament.time.monotonic',side_effect=[0,30,40]):
    a=self.s.update(dict(self.printer(1000),state='printing'),CFG)
    b=self.s.update(dict(self.printer(2000),state='printing'),CFG)
    c=self.s.update(dict(self.printer(2000),state='paused'),CFG)

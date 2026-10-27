@@ -1,5 +1,5 @@
 import unittest
-from printwatch.gateway import authorize
+from layersentra.gateway import authorize
 MOBILE={'hostname':'mac.test.ts.net','login':'owner@test'}
 class GatewayTests(unittest.TestCase):
  def test_remote_without_identity_denied(self):

@@ -1,6 +1,8 @@
-# PrintWatch — guida rapida
+# LayerSentra — guida rapida
 
-Tema condiviso **PrintWatch Dot** per pannello e app: [direzione grafica](DESIGN.md).
+[Passaggio dal nome precedente / migration](MIGRATION.it.md).
+
+Tema condiviso **LayerSentra Dot** per pannello e app: [direzione grafica](DESIGN.md).
 
 Software gratuito e open source con licenza MIT per monitorare stampanti Klipper
 con immagini, AI locale, pannello Fluidd/Mainsail e stima del filamento.
@@ -23,7 +25,7 @@ acceso e raggiungere la stampante. L'app non usa servizi AI cloud né una demo a
 ## Camere nel pannello Klipper
 
 Aggiungi in Fluidd una camera di tipo pagina HTTP/iframe con l'indirizzo di
-PrintWatch raggiungibile dal browser e `?embed=camera` alla fine. La vista è compatta:
+LayerSentra raggiungibile dal browser e `?embed=camera` alla fine. La vista è compatta:
 immagine grande, tasti piccoli, **Dati e filamento** in evidenza. Per un telefono
 usa il tuo indirizzo privato Tailscale, non il localhost del computer.
 
@@ -40,7 +42,7 @@ o insufficiente. L'autonomia è indicativa; non sostituisce un sensore o una bil
 L'accesso privato opzionale con Tailscale si prepara con:
 
 ```sh
-.venv/bin/python -m printwatch.remote_setup --enable-serve
+.venv/bin/python -m layersentra.remote_setup --enable-serve
 ```
 
 Il comando ricava dal tuo account il nome del tuo computer: non contiene nomi o IP
@@ -62,7 +64,7 @@ vanno pubblicati. Il repository include regole `.gitignore` e nessun dato reale.
 
 ## Uso continuativo
 
-Se il computer che esegue PrintWatch va in stop o si spegne, l'analisi si ferma e
+Se il computer che esegue LayerSentra va in stop o si spegne, l'analisi si ferma e
 il collegamento remoto smette di funzionare. Tailscale non tiene acceso il server.
 Per usarlo stabilmente installalo sul computer destinato a rimanere acceso,
 configura il risparmio energetico e verifica l'avvio automatico dopo il login.
@@ -71,7 +73,7 @@ La [guida al funzionamento continuativo](DEPLOYMENT.md) elenca le prove necessar
 
 ## Server proprio, VPS o dominio personale
 
-Puoi ospitare PrintWatch sul tuo server e raggiungerlo con un tuo dominio. La
+Puoi ospitare LayerSentra sul tuo server e raggiungerlo con un tuo dominio. La
 [guida completa al self-hosting](HOSTING.it.md) spiega prerequisiti, collegamento
 alla stampante via VPN, HTTPS con password, avvio automatico Linux e verifiche.
 È incluso un generatore di configurazione privato; un semplice link o hosting
@@ -82,7 +84,7 @@ stop mentre alimentato, lasciando spegnere lo schermo.
 
 [Pacchetti, installazione e limiti delle build di prova](APPS.it.md).
 
-Il client nativo Flutter è in [apps/printwatch_client](apps/printwatch_client).
+Il client nativo Flutter è in [apps/layersentra_client](apps/layersentra_client).
 Mostra camera, stato e filamento e include Klipper. Il server 0.4.0 consente
 Avvia/Ferma analisi AI anche da remoto: il comando forza la sola osservazione.
 La configurazione generale rimane riservata all’accesso locale. Le frecce LSC

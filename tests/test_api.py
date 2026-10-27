@@ -1,19 +1,19 @@
 import unittest
 from unittest.mock import patch
-from printwatch.app import app,TOKEN
+from layersentra.app import app,TOKEN
 
 class ApiTests(unittest.TestCase):
     def setUp(self): self.client=app.test_client()
     def test_external_host_refused(self):
         self.assertEqual(self.client.get('/api/status',base_url='http://printer.example').status_code,403)
     def test_cross_origin_cannot_change_config(self):
-        r=self.client.post('/api/config',base_url='http://localhost:7127',json={},headers={'Origin':'http://other.example','X-PrintWatch-Token':TOKEN})
+        r=self.client.post('/api/config',base_url='http://localhost:7127',json={},headers={'Origin':'http://other.example','X-LayerSentra-Token':TOKEN})
         self.assertEqual(r.status_code,403)
     def test_missing_token_refused(self):
         self.assertEqual(self.client.post('/api/config',base_url='http://localhost:7127',json={}).status_code,403)
     def test_invalid_configuration_is_not_written(self):
-        with patch('printwatch.app.save') as save:
-            r=self.client.post('/api/config',base_url='http://localhost:7127',json={'action':'cancel'},headers={'X-PrintWatch-Token':TOKEN})
+        with patch('layersentra.app.save') as save:
+            r=self.client.post('/api/config',base_url='http://localhost:7127',json={'action':'cancel'},headers={'X-LayerSentra-Token':TOKEN})
             self.assertEqual(r.status_code,400); save.assert_not_called()
     def test_startup_observation_only(self):
         r=self.client.get('/api/config',base_url='http://localhost:7127')
@@ -23,7 +23,7 @@ class ApiTests(unittest.TestCase):
 class MobileTests(unittest.TestCase):
     def setUp(self):
         self.client=app.test_client()
-        self.mobile=patch('printwatch.app.MOBILE',{'hostname':'mac.test.ts.net','login':'owner@example.test'})
+        self.mobile=patch('layersentra.app.MOBILE',{'hostname':'mac.test.ts.net','login':'owner@example.test'})
         self.mobile.start(); self.addCleanup(self.mobile.stop)
     def test_mobile_without_identity_refused(self):
         self.assertEqual(self.client.get('/api/status',base_url='https://mac.test.ts.net').status_code,403)
@@ -34,7 +34,7 @@ class MobileTests(unittest.TestCase):
         self.assertEqual(r.status_code,200); self.assertTrue(r.json['read_only'])
         self.assertIsNone(r.json['token']); self.assertEqual(r.json['config']['cameras'][0]['url'],'')
     def test_mobile_cannot_change_configuration_even_with_token(self):
-        r=self.client.post('/api/config',base_url='https://mac.test.ts.net',json={},headers={'Tailscale-User-Login':'owner@example.test','X-PrintWatch-Token':TOKEN})
+        r=self.client.post('/api/config',base_url='https://mac.test.ts.net',json={},headers={'Tailscale-User-Login':'owner@example.test','X-LayerSentra-Token':TOKEN})
         self.assertEqual(r.status_code,403)
     def test_direct_remote_request_cannot_spoof_proxy(self):
         r=self.client.get('/api/status',base_url='https://mac.test.ts.net',headers={'Tailscale-User-Login':'owner@example.test'},environ_overrides={'REMOTE_ADDR':'100.64.0.2'})

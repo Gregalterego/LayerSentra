@@ -8,9 +8,9 @@ import os, plistlib, subprocess
 root=Path.cwd()
 folder=Path.home()/'Library/LaunchAgents'
 folder.mkdir(parents=True,exist_ok=True)
-file=folder/'local.printwatch.observer.plist'
-if file.exists(): raise SystemExit('Esiste già un servizio PrintWatch: verificare la configurazione prima di sostituirlo.')
-config={'Label':'local.printwatch.observer','ProgramArguments':['/usr/bin/caffeinate','-s',str(root/'.venv/bin/python'),'-m','printwatch.app','--observe'],
+file=folder/'local.layersentra.observer.plist'
+if file.exists() or (folder/'local.printwatch.observer.plist').exists(): raise SystemExit('Esiste già un servizio LayerSentra: verificare la configurazione prima di sostituirlo.')
+config={'Label':'local.layersentra.observer','ProgramArguments':['/usr/bin/caffeinate','-s',str(root/'.venv/bin/python'),'-m','layersentra.app','--observe'],
         'WorkingDirectory':str(root),'RunAtLoad':True,'KeepAlive':True,'ThrottleInterval':30,
         'StandardOutPath':str(root/'data/service.log'),'StandardErrorPath':str(root/'data/service-error.log'),
         'EnvironmentVariables':{'PATH':'/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin'}}

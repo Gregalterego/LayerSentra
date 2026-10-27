@@ -2,7 +2,7 @@
 
 ## What is supported
 
-PrintWatch can use an optional local bridge to convert **LSC1-framed H.264** into
+LayerSentra can use an optional local bridge to convert **LSC1-framed H.264** into
 JPEG snapshots. The secondary camera then uses the same region of interest,
 masks, AI model, thresholds, event history and decision engine as other cameras.
 This is a software bridge, not a universal LSC firmware installer or ONVIF driver.
@@ -10,7 +10,7 @@ This is a software bridge, not a universal LSC firmware installer or ONVIF drive
 Tested camera family: Anyka AK39EV330 / ARM926EJ-S, Linux 4.4.192V2.1,
 firmware bundle HT_IPC286KSD3M_TUYA_AK3918EV330, version 3.2863.105.28.
 Other cameras sold under the same brand may use different hardware or firmware.
-The camera's vendor app continues to control pan/tilt. PrintWatch does not yet
+The camera's vendor app continues to control pan/tilt. LayerSentra does not yet
 provide pan/tilt controls, position presets, automatic tracking or auto-calibration.
 
 ## Prerequisites
@@ -20,7 +20,7 @@ provide pan/tilt controls, position presets, automatic tracking or auto-calibrat
 - BusyBox for the camera architecture with its HTTP server applet.
 - An existing compatible `lsc-reader-armv5-v0.3` executable accepting
   `/tmp/VideoSubStream0 20` and emitting the LSC1 records described below.
-- FFmpeg installed on the PrintWatch host, with H.264 decoding and MJPEG encoding.
+- FFmpeg installed on the LayerSentra host, with H.264 decoding and MJPEG encoding.
 
 The vendor firmware, BusyBox executable, camera reader executable, trained model,
 flash dumps and camera recordings are **not distributed** here. The original C
@@ -46,13 +46,13 @@ camera setup, not a complete firmware replacement.
 The server uses HTTP Basic authentication. It is intended for a trusted local
 network, not direct Internet access. Do not forward its port on your router.
 
-## Configure PrintWatch
+## Configure LayerSentra
 
 1. Copy `examples/lsc-camera.example.json` to `data/lsc-camera.json`.
 2. Set the camera capture URL, your generated username/password and the absolute
    FFmpeg executable path. Keep this file private (`chmod 600 data/lsc-camera.json`
    on macOS/Linux). Never put credentials in a camera URL.
-3. Restart PrintWatch so its bridge thread starts.
+3. Restart LayerSentra so its bridge thread starts.
 4. In the local dashboard's camera settings, enable the second camera and set its
    URL to `http://127.0.0.1:7127/api/lsc/snapshot`.
 5. Save and check `http://127.0.0.1:7127/api/lsc/status`. `ready: true` means a
@@ -65,7 +65,7 @@ frame count does not directly measure request duration. The host skips repeated
 source timestamps and refuses to serve JPEGs older than eight seconds. Clock
 resets larger than one minute begin a new source epoch. Short reset/decoder and
 network recovery gaps can occur. This is snapshot monitoring, not continuous video
-with audio. Stale or missing frames reset AI evidence in PrintWatch.
+with audio. Stale or missing frames reset AI evidence in LayerSentra.
 
 ## Troubleshooting
 
