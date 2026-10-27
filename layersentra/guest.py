@@ -34,6 +34,10 @@ def read_settings(path):
         raise ValueError('Chiavi ospite non valide')
     if cfg['camera_id'] not in ('primary', 'secondary'):
         raise ValueError('Camera non valida')
+    ids = cfg.get('camera_ids', [cfg['camera_id']])
+    if not isinstance(ids, list) or not ids or len(ids) > 2 or any(cid not in ('primary', 'secondary') for cid in ids) or len(set(ids)) != len(ids):
+        raise ValueError('Camere ospite non valide')
+    cfg['camera_ids'] = ids
     expiry = cfg.get('expires_at', 'missing')
     if expiry is not None and (isinstance(expiry, bool) or not isinstance(expiry, (int, float))
                                or not math.isfinite(expiry)):
@@ -52,6 +56,8 @@ def create_app(settings_path=SETTINGS):
     action_lock = threading.Lock()
     rate_lock = threading.Lock()
     last = {}
+    holds = {}
+    hold_lock = threading.Lock()
 
     def allowed_rate(key, seconds):
         with rate_lock:
@@ -81,8 +87,11 @@ def create_app(settings_path=SETTINGS):
             return jsonify(error='Origine o formato non consentiti'), 403
         # Explicit allowlist is enforced before routing, including all unknown paths.
         if request.path not in ('/', '/guest.js', '/guest.css', '/session', '/api/status',
-                                '/api/frame', '/api/pause'):
+                                '/api/frame', '/api/frame/primary', '/api/frame/secondary',
+                                '/api/hold', '/api/hold/cancel', '/api/pause', '/api/resume'):
             return jsonify(error='Operazione non consentita'), 403
+        if request.path.startswith('/api/frame/') and request.path.rsplit('/',1)[1] not in cfg['camera_ids']:
+            return jsonify(error='Camera non consentita'), 403
         if request.path in ('/', '/guest.js', '/guest.css', '/session'):
             return
         if (session.get('grant') != cfg['token_hash'] or session.get('until', 0) <= time.time()):
@@ -138,19 +147,28 @@ def create_app(settings_path=SETTINGS):
     def status():
         try:
             data = backend_json('/api/status')
-            cid = cfg_now()['camera_id']
-            camera = data.get('cameras', {}).get(cid, {})
-            age = time.time() - (camera.get('captured_at') or 0)
-            fresh = camera.get('state') == 'ok' and 0 <= age <= 10
+            cfg = cfg_now()
+            cameras = []
+            for cid in cfg['camera_ids']:
+                camera = data.get('cameras', {}).get(cid, {})
+                age = time.time() - (camera.get('captured_at') or 0)
+                cameras.append(dict(id=cid, name='Telecamera stampante' if cid == 'primary' else 'Telecamera LSC',
+                                    ready=camera.get('state') == 'ok' and 0 <= age <= 10))
             return jsonify(state=data.get('printer', {}).get('state', 'unknown'),
-                           camera_ready=fresh, csrf=session['csrf'])
+                           printer_ready=data.get('printer', {}).get('fresh') is True,
+                           camera_ready=any(c['ready'] for c in cameras), cameras=cameras,
+                           can_resume=cfg.get('can_resume') is True, hold_seconds=5, csrf=session['csrf'])
         except Exception:
             return jsonify(error='Server o telecamera non disponibili'), 503
 
-    @app.get('/api/frame')
-    def frame():
+    @app.get('/api/frame', defaults={'camera_id': None})
+    @app.get('/api/frame/<camera_id>')
+    def frame(camera_id):
         try:
-            cid = cfg_now()['camera_id']
+            cfg = cfg_now()
+            cid = camera_id or cfg['camera_id']
+            if cid not in cfg['camera_ids']:
+                return jsonify(error='Camera non consentita'), 403
             data = backend_json('/api/status').get('cameras', {}).get(cid, {})
             age = time.time() - (data.get('captured_at') or 0)
             if data.get('state') != 'ok' or not 0 <= age <= 10:
@@ -170,25 +188,76 @@ def create_app(settings_path=SETTINGS):
         except Exception:
             return jsonify(error='Immagine non aggiornata o non disponibile'), 503
 
-    @app.post('/api/pause')
-    def pause():
-        # Fixed action only. No G-code, URL, resume, cancel or configuration payloads.
-        if request.get_json(silent=True) != {}:
-            return jsonify(error='La pausa non accetta parametri'), 400
-        if not allowed_rate('pause', 5):
-            return jsonify(error='Pausa già richiesta: verificare lo stato'), 429
+    @app.post('/api/hold')
+    def begin_hold():
+        body = request.get_json(silent=True)
+        if not isinstance(body, dict) or set(body) != {'action'} or body['action'] not in ('pause', 'resume'):
+            return jsonify(error='Azione non valida'), 400
+        if body['action'] == 'resume' and cfg_now().get('can_resume') is not True:
+            return jsonify(error='Ripresa ospite non abilitata'), 403
+        now = time.monotonic()
+        with hold_lock:
+            for token, hold in list(holds.items()):
+                if now - hold['started'] > 20 or hold['session'] == session['csrf']:
+                    holds.pop(token)
+            if len(holds) >= 256:
+                return jsonify(error='Troppe richieste: riprovare'), 429
+            token = secrets.token_urlsafe(32)
+            holds[token] = dict(started=now, session=session['csrf'], action=body['action'])
+        return jsonify(hold_token=token, seconds=5)
+
+    @app.post('/api/hold/cancel')
+    def cancel_hold():
+        body = request.get_json(silent=True)
+        if not isinstance(body, dict) or set(body) != {'hold_token'} or not isinstance(body['hold_token'], str):
+            return jsonify(error='Richiesta non valida'), 400
+        with hold_lock:
+            hold = holds.get(body['hold_token'])
+            if hold and hold['session'] == session['csrf']:
+                holds.pop(body['hold_token'])
+        return jsonify(ok=True)
+
+    def execute_action(action):
+        if action == 'resume' and cfg_now().get('can_resume') is not True:
+            return jsonify(error='Ripresa ospite non abilitata'), 403
+        body = request.get_json(silent=True)
+        if not isinstance(body, dict) or set(body) != {'hold_token'} or not isinstance(body['hold_token'], str):
+            return jsonify(error='Tenere premuto il pulsante per cinque secondi'), 400
+        with hold_lock:
+            hold = holds.get(body['hold_token'])
+            if not hold or hold['session'] != session['csrf']:
+                return jsonify(error='Pressione non valida o gia utilizzata'), 409
+            holds.pop(body['hold_token'])
+        elapsed = time.monotonic() - hold['started']
+        if hold['action'] != action or not 5 <= elapsed <= 20:
+            return jsonify(error='Pressione troppo breve, scaduta o azione diversa'), 409
+        if not allowed_rate('printer-action', 5):
+            return jsonify(error='Comando gia richiesto: verificare lo stato'), 429
         if not action_lock.acquire(blocking=False):
             return jsonify(error='Richiesta in corso'), 409
         try:
             moonraker = Moonraker(load(ROOT / 'data/config.json')['moonraker_url'])
-            if moonraker.status().get('state') == 'paused':
-                return jsonify(ok=True, state='paused')
-            moonraker.pause()  # Rechecks live state and confirms paused, never resumes.
-            return jsonify(ok=True, state='paused')
+            state = moonraker.status()
+            required = 'printing' if action == 'pause' else 'paused'
+            if state.get('fresh') is False or state.get('state') != required:
+                return jsonify(error='Stato stampante cambiato: verificare prima di riprovare'), 409
+            if action == 'pause':
+                moonraker.pause()
+            else:
+                moonraker.resume()
+            return jsonify(ok=True, state='paused' if action == 'pause' else 'printing')
         except Exception:
-            return jsonify(error='Pausa non confermata: controllare la stampante'), 502
+            return jsonify(error='Comando non confermato: controllare la stampante'), 502
         finally:
             action_lock.release()
+
+    @app.post('/api/pause')
+    def pause():
+        return execute_action('pause')
+
+    @app.post('/api/resume')
+    def resume():
+        return execute_action('resume')
 
     return app
 
