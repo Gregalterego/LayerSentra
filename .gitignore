@@ -27,3 +27,8 @@ models/*
 *.pt
 ._*
 camera-sd/lsc-web/httpd.conf
+
+# Public generated launcher artwork (never camera captures)
+!apps/layersentra_client/android/app/src/main/res/mipmap-*/ic_launcher.png
+!apps/layersentra_client/ios/Runner/Assets.xcassets/AppIcon.appiconset/*.png
+!apps/layersentra_client/macos/Runner/Assets.xcassets/AppIcon.appiconset/*.png

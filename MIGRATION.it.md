@@ -23,7 +23,9 @@ installazioni, indicare esplicitamente la cartella con `LAYERSENTRA_HOME`.
 Nuove installazioni usano il nome LayerSentra e il modulo `layersentra`.
 
 Le app mantengono temporaneamente gli identificativi tecnici di sviluppo usati
-nelle prime versioni: cambiarli creerebbe app separate e perderebbe le preferenze.
+nelle prime versioni per Android e Apple: cambiarli creerebbe app separate e perderebbe le preferenze.
+Su Windows il nuovo nome usa una cartella delle preferenze separata: reinserire gli
+indirizzi del server nella nuova app. I dati del server non vengono spostati o cancellati.
 Nome visibile, marchio, icone, pacchetti e codice client sono LayerSentra. Prima di
 una distribuzione negli store scegliere identificativi definitivi sotto il proprio
 controllo. La firma Android di debug continua a poter richiedere una nuova
