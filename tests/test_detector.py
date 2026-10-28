@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from layersentra.detector import decode
+from layerscan.detector import decode
 
 class DecodeTests(unittest.TestCase):
     def test_same_class_duplicates_removed_other_class_preserved(self):

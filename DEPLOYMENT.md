@@ -1,9 +1,9 @@
-# Running LayerSentra continuously
+# Running LayerScan continuously
 
 ## A reachable URL is not a running server
 
 Tailscale Serve forwards traffic; it does not run the AI application, wake a sleeping
-computer or replace the computer hosting LayerSentra. If that computer sleeps,
+computer or replace the computer hosting LayerScan. If that computer sleeps,
 shuts down, loses its printer route or exits the application, remote monitoring stops.
 Closing a laptop lid normally makes it unsuitable as an unattended host.
 
@@ -13,7 +13,7 @@ a DHCP reservation in the router. An address reservation alone does not start an
 
 ## macOS desktop deployment
 
-1. Install Python 3.12 and LayerSentra on the destination computer, not on a different laptop.
+1. Install Python 3.12 and LayerScan on the destination computer, not on a different laptop.
 2. Set the destination's own printer and camera addresses in the local dashboard.
 3. Add a compatible model with appropriate usage rights and verify live observation.
 4. The startup helper uses `caffeinate -s` to prevent system sleep while on mains
@@ -21,7 +21,7 @@ a DHCP reservation in the router. An address reservation alone does not start an
 5. Run `enable-autostart.command` only after checking that another copy is not running.
    It installs a user LaunchAgent and starts observe-only monitoring after that user logs in.
 6. For remote access, configure Tailscale on the destination and run
-   `python -m layersentra.remote_setup --enable-serve`. The printed destination URLs
+   `python -m layerscan.remote_setup --enable-serve`. The printed destination URLs
    are different from the laptop's URLs. Update any camera embedding or phone shortcut.
 7. Stop the old installation when the new one has been tested, to avoid duplicate monitoring.
 

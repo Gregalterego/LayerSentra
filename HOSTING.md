@@ -2,7 +2,7 @@
 
 [Full step-by-step guide in Italian](HOSTING.it.md)
 
-A personal server, always-on desktop or VPS can run LayerSentra. A domain or link
+A personal server, always-on desktop or VPS can run LayerScan. A domain or link
 only names the service: static hosting such as GitHub Pages cannot execute the
 Python worker, AI model and WebSocket gateway. A remote server needs a private VPN
 route to both Moonraker and the camera. Never expose those devices directly.
@@ -10,20 +10,20 @@ route to both Moonraker and the camera. Never expose those devices directly.
 1. Install Python 3.12 and the project as described in the README. Add a compatible,
    authorized model. Configure the printer and camera addresses from the server's
    perspective using localhost or an SSH port-forward. Verify local observation.
-2. For private access, use `python -m layersentra.remote_setup --enable-serve`.
+2. For private access, use `python -m layerscan.remote_setup --enable-serve`.
 3. Alternatively, install Caddy 2.8+ on the **same machine** and configure a DNS
    hostname with ports 80/443 and 8443 reachable. Keep 7127/7128 on loopback.
 4. Generate private settings and an authenticated HTTPS Caddyfile:
 
 ```sh
-.venv/bin/python -m layersentra.self_host_setup \
+.venv/bin/python -m layerscan.self_host_setup \
   --hostname watch.example.org --user operator \
   --password-hash "$(caddy hash-password)"
 caddy validate --config data/Caddyfile --adapter caddyfile
 ```
 
 Install the generated `data/Caddyfile` into your Caddy service configuration, or
-merge its site blocks if you already host other sites. Restart LayerSentra. The
+merge its site blocks if you already host other sites. Restart LayerScan. The
 generator refuses to overwrite an existing remote identity or generated Caddyfile.
 Do not share generated files; both are private and excluded from Git.
 
@@ -32,22 +32,22 @@ allows real printer controls. Both require HTTP Basic Authentication. Authentica
 to the 8443 site in a separate tab before embedding it. Phone apps must support
 HTTPS, custom ports and Basic Auth; otherwise use the browser or private Tailscale.
 Caddy overwrites the upstream secret header and removes user credentials. Only
-loopback requests with the expected host and secret are accepted by LayerSentra.
+loopback requests with the expected host and secret are accepted by LayerScan.
 A proxy on a separate host/container is outside this supported topology.
 
-An example Linux systemd unit is included at [deploy/layersentra.service](deploy/layersentra.service).
-It assumes `/opt/layersentra`, a dedicated `layersentra` user/group and a prepared
+An example Linux systemd unit is included at [deploy/layerscan.service](deploy/layerscan.service).
+It assumes `/opt/layerscan`, a dedicated `layerscan` user/group and a prepared
 virtual environment. Create the account and set ownership first; the service must
 read code/models and write `data/`. Review paths before installing:
 
 ```sh
-sudo install -m 644 deploy/layersentra.service /etc/systemd/system/layersentra.service
+sudo install -m 644 deploy/layerscan.service /etc/systemd/system/layerscan.service
 sudo systemctl daemon-reload
-sudo systemctl enable --now layersentra
-sudo systemctl status layersentra
+sudo systemctl enable --now layerscan
+sudo systemctl status layerscan
 ```
 
-On macOS, the login helper now wraps LayerSentra in `caffeinate -s`: the display can
+On macOS, the login helper now wraps LayerScan in `caffeinate -s`: the display can
 sleep while the powered system stays awake. A user login may still be required
 after reboot. A laptop with its lid closed is not a verified unattended host.
 

@@ -1,0 +1,23 @@
+# Example: install the project and venv in /opt/layerscan, owned by layerscan.
+# Install this unit only after local configuration and observation are verified.
+[Unit]
+Description=LayerScan local AI print monitor
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=layerscan
+Group=layerscan
+WorkingDirectory=/opt/layerscan
+ExecStart=/opt/layerscan/.venv/bin/python -m layerscan.app --observe
+Restart=on-failure
+RestartSec=10
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

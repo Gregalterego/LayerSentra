@@ -2,7 +2,7 @@ import io
 import struct
 import time
 import unittest
-from layersentra.lsc import records, LSCBridge, MAX_RECORD
+from layerscan.lsc import records, LSCBridge, MAX_RECORD
 
 class LSCTests(unittest.TestCase):
     def record(self, ts, data): return struct.pack('>4sQI', b'LSC1', ts, len(data)) + data

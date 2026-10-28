@@ -5,11 +5,11 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 from PIL import Image
-from layersentra.config import DEFAULT
-from layersentra.evaluate import evaluate
+from layerscan.config import DEFAULT
+from layerscan.evaluate import evaluate
 
 class EvaluationTests(unittest.TestCase):
-    @patch('layersentra.evaluate.Detector')
+    @patch('layerscan.evaluate.Detector')
     def test_duplicate_prediction_is_false_positive_and_missing_truth_is_false_negative(self,model):
         d={'category':'spaghetti','score':.9,'box':[.1,.1,.2,.2]}
         model.return_value.infer.return_value=([d,dict(d)],10)

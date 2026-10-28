@@ -1,4 +1,4 @@
-"""Raster exports of LayerSentra's original vector-like dotted L; requires Pillow."""
+"""Raster exports of LayerScan's original vector-like dotted L; requires Pillow."""
 import json
 from pathlib import Path
 from PIL import Image, ImageDraw
@@ -11,7 +11,7 @@ for y,row in enumerate(['100000','100000','100000','100000','100000','100000','1
    cx,cy=224+x*96,224+y*96
    draw.ellipse((cx-30,cy-30,cx+30,cy+30),fill=theme['text'])
 draw.ellipse((774,774,874,874),fill=theme['action'])
-app=ROOT/'apps/layersentra_client'
+app=ROOT/'apps/layerscan_client'
 for platform in ('ios','macos'):
  folder=app/platform/'Runner/Assets.xcassets/AppIcon.appiconset'
  for entry in json.loads((folder/'Contents.json').read_text())['images']:

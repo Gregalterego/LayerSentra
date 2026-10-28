@@ -1,1 +1,1 @@
-"""LayerSentra: local print monitoring with explicit uncertainty."""
+"""Compatibility namespace for installations predating LayerScan."""

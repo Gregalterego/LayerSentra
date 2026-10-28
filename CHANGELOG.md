@@ -1,9 +1,15 @@
 # Changelog
 
+## LayerScan rename — 2026-10-28
+
+- Rename the canonical server, native clients, build artifacts and documentation to LayerScan.
+- Preserve PrintWatch and LayerSentra launch aliases and existing app identifiers.
+- Update dotted wordmarks and GitHub project links.
+
 ## 0.6.0 — 2026-10-27
 
-- Rename the project, repository, visible app names, wordmark and launch icons to LayerSentra.
-- Canonical Python module and Flutter project become layersentra / layersentra_client.
+- Rename the project, repository, visible app names, wordmark and launch icons to LayerScan.
+- Canonical Python module and Flutter project become layerscan / layerscan_client.
 - Preserve legacy launch commands, installed app identifiers and wire headers for migration.
 - Keep historical releases and data; macOS updater recognizes both installation names.
 

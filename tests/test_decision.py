@@ -1,7 +1,7 @@
 import copy
 import unittest
-from layersentra.config import DEFAULT, validate
-from layersentra.decision import DecisionEngine, pause_allowed
+from layerscan.config import DEFAULT, validate
+from layerscan.decision import DecisionEngine, pause_allowed
 
 class DecisionTests(unittest.TestCase):
     def setUp(self):

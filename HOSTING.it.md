@@ -1,6 +1,6 @@
 # Server proprio, VPS o dominio personale
 
-LayerSentra può essere eseguito su un computer sempre acceso, un mini PC o un server
+LayerScan può essere eseguito su un computer sempre acceso, un mini PC o un server
 proprio. Un dominio è l'indirizzo del servizio: non esegue il programma.
 GitHub Pages, un link condiviso e un normale hosting di sole pagine statiche non
 possono ospitare Python, il modello AI e i collegamenti in tempo reale di Klipper.
@@ -27,7 +27,7 @@ Scarica il repository da GitHub. Nella sua cartella, con Python 3.12 installato:
 ```sh
 python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements.lock.txt
-.venv/bin/python -m layersentra.app
+.venv/bin/python -m layerscan.app
 ```
 
 Usa `requirements-intel.txt` su Mac Intel. La disponibilità delle librerie AI dipende
@@ -46,7 +46,7 @@ istanza prima di attivare un servizio. Avvia con `--observe` per osservazione au
 
 ## 2. Accesso con un dominio proprio
 
-Questa modalità usa **Caddy 2.8 o successivo sullo stesso server di LayerSentra**.
+Questa modalità usa **Caddy 2.8 o successivo sullo stesso server di LayerScan**.
 Installa Caddy dalla [documentazione ufficiale](https://caddyserver.com/docs/install).
 È un'alternativa a Tailscale Serve: non usare entrambi sulle stesse porte.
 Il generatore conserva le configurazioni remote preesistenti e rifiuta di sovrascriverle.
@@ -58,14 +58,14 @@ puntare anch'esso al server corretto. Non aprire le porte applicative 7127/7128.
 Genera una password robusta con il comando interattivo di Caddy e crea i file locali:
 
 ```sh
-.venv/bin/python -m layersentra.self_host_setup \
+.venv/bin/python -m layerscan.self_host_setup \
   --hostname stampa.example.org \
   --user operatore \
   --password-hash "$(caddy hash-password)"
 ```
 
 Il dominio è un esempio: sostituiscilo con il tuo. La password viene richiesta da
-Caddy; LayerSentra riceve soltanto l'hash. Il comando scrive `data/mobile-access.json`
+Caddy; LayerScan riceve soltanto l'hash. Il comando scrive `data/mobile-access.json`
 e `data/Caddyfile` con permessi privati, senza modificare DNS, firewall o servizi.
 Non condividere questi file: contengono il segreto tra proxy e applicazione.
 
@@ -85,7 +85,7 @@ sudo systemctl reload caddy
 ```
 
 Se Caddy ospita già altri siti, integra i due blocchi nel file esistente invece di
-sostituirlo. Riavvia LayerSentra affinché legga la nuova identità remota.
+sostituirlo. Riavvia LayerScan affinché legga la nuova identità remota.
 
 Gli indirizzi risultanti sono:
 
@@ -100,29 +100,29 @@ la stampante. Le app telefono devono supportare HTTPS, porta personalizzata e
 HTTP Basic Auth; in caso contrario usa il browser o la modalità privata Tailscale.
 
 Caddy autentica l'utente e sostituisce l'header segreto prima di inoltrare la richiesta.
-LayerSentra accetta tale identità soltanto da loopback, sul dominio atteso; i segreti
+LayerScan accetta tale identità soltanto da loopback, sul dominio atteso; i segreti
 non sono inviati alla stampante. Un proxy su un altro computer/container non è
 supportato da questa configurazione. Non pubblicare direttamente il server Flask.
 
 ## 3. Avvio automatico Linux
 
-Il file [deploy/layersentra.service](deploy/layersentra.service) è un esempio per
-un'installazione in `/opt/layersentra` con account dedicato `layersentra`.
+Il file [deploy/layerscan.service](deploy/layerscan.service) è un esempio per
+un'installazione in `/opt/layerscan` con account dedicato `layerscan`.
 Crea prima tale account e prepara la cartella con proprietà e permessi adatti.
 L'utente del servizio deve leggere codice/modello e scrivere in `data/`; non deve
 avere privilegi amministrativi. Non usare una cartella home con questo esempio,
 che protegge le home tramite systemd.
 
 ```sh
-sudo install -m 644 deploy/layersentra.service /etc/systemd/system/layersentra.service
+sudo install -m 644 deploy/layerscan.service /etc/systemd/system/layerscan.service
 sudo systemctl daemon-reload
-sudo systemctl enable --now layersentra
-sudo systemctl status layersentra
-sudo journalctl -u layersentra -n 80 --no-pager
+sudo systemctl enable --now layerscan
+sudo systemctl status layerscan
+sudo journalctl -u layerscan -n 80 --no-pager
 ```
 
 Adatta utente e percorsi prima di installarlo. Il servizio parte in osservazione e
-viene riavviato in caso di errore. Per fermarlo: `sudo systemctl stop layersentra`.
+viene riavviato in caso di errore. Per fermarlo: `sudo systemctl stop layerscan`.
 Su Mac usa `enable-autostart.command`: impedisce lo stop per inattività quando
 alimentato, ma richiede l'accesso dell'utente dopo un riavvio.
 

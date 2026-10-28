@@ -1,6 +1,6 @@
 # Security and deployment boundaries
 
-LayerSentra is a local prototype, not an Internet-facing printer management service.
+LayerScan is a local prototype, not an Internet-facing printer management service.
 Its dashboard binds to loopback on port 7127 and its full-UI proxy to loopback on 7128.
 Do not change these to 0.0.0.0 or expose them with router port forwarding.
 

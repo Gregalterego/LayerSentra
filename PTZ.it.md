@@ -16,10 +16,10 @@ Un amministratore può configurare cinque URL HTTP/HTTPS privati per `left`, `ri
 POST JSON con `duration_ms: 200`; deve rispondere 200 o 204.
 
 Ogni movimento deve essere un impulso limitato e il bridge **deve arrestare da solo
-il motore entro un secondo**, anche se LayerSentra, la rete o il client si interrompono.
+il motore entro un secondo**, anche se LayerScan, la rete o il client si interrompono.
 Il pulsante Stop è aggiuntivo: non sostituisce il limite autonomo del bridge.
 Non collegare direttamente API che avviano una rotazione continua senza arresto autonomo.
-LayerSentra non può verificare da solo che il bridge rispetti tale requisito.
+LayerScan non può verificare da solo che il bridge rispetti tale requisito.
 
 Configurazione di esempio, da adattare soltanto dopo aver verificato il bridge:
 

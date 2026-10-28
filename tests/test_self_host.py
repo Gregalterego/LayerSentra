@@ -3,10 +3,10 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
-from layersentra.access import proxy_identity, PROXY_HEADER
-from layersentra.gateway import authorize
-from layersentra.app import app, TOKEN
-from layersentra.self_host_setup import prepare
+from layerscan.access import proxy_identity, PROXY_HEADER
+from layerscan.gateway import authorize
+from layerscan.app import app, TOKEN
+from layerscan.self_host_setup import prepare
 
 HOST='watch.example.org'
 SECRET='a'*48
@@ -27,7 +27,7 @@ class SelfHostTests(unittest.TestCase):
         headers['Origin']='https://evil.example'
         self.assertFalse(authorize(HOST+':8443','127.0.0.1',headers,SETTINGS))
     def test_dashboard_remains_read_only_and_hides_secrets(self):
-        with patch('layersentra.app.MOBILE',SETTINGS):
+        with patch('layerscan.app.MOBILE',SETTINGS):
             client=app.test_client();headers={PROXY_HEADER:SECRET}
             response=client.get('/api/config',base_url='https://'+HOST,headers=headers)
             self.assertEqual(response.status_code,200)
@@ -35,7 +35,7 @@ class SelfHostTests(unittest.TestCase):
             self.assertEqual(response.json['config']['moonraker_url'],'')
             self.assertNotIn(SECRET,response.text)
             self.assertEqual(client.post('/api/config',base_url='https://'+HOST,json={},
-                headers={**headers,'X-LayerSentra-Token':TOKEN}).status_code,403)
+                headers={**headers,'X-LayerScan-Token':TOKEN}).status_code,403)
     def test_setup_writes_private_files_without_overwriting(self):
         with tempfile.TemporaryDirectory() as directory:
             folder=Path(directory)
