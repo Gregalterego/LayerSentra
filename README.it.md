@@ -112,3 +112,8 @@ I programmi della telecamera e il modello AI non sono inclusi.
 Configurazioni reali, password, registrazioni, pesi del modello e dati locali
 restano esclusi dalla pubblicazione. Copia gli esempi in `data/` e sostituisci
 i segnaposto soltanto nella tua installazione.
+
+
+## Guida completa alle procedure
+
+[Monitor, Fluidd, telecamera LSC/Anyka, AI, filamento e avvisi](docs/procedure/README.md): percorso pratico con esempi anonimi, verifiche, ripristino e distinzione fra funzioni provate e sviluppi ancora aperti. Non contiene configurazioni personali o credenziali.

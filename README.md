@@ -198,3 +198,8 @@ The remote dashboard now permits only scoped observation start/stop and, when
 explicitly configured, PTZ pulse commands. These use separate tokens and the same
 remote authentication/origin checks. General configuration changes remain denied.
 Starting or stopping observation always forces observe-only mode.
+
+
+## Practical procedures (Italian)
+
+[Complete setup and verification guide](docs/procedure/README.md) covering the monitor, Fluidd, LSC/Anyka video, AI, filament accounting, private phone access and notifications. Includes anonymized examples, recovery procedures and explicit implementation and validation limits.
